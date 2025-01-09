@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${post.title}">Пост</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1 th:text="${post.title}"></h1>
+  <p>Автор: <span th:text="${post.author.username}"></span></p>
+  <div th:text="${post.content}"></div> <!-- Предположим, что у вас есть поле content -->
+  <a th:href="@{/posts}" class="btn btn-secondary">Назад к списку постов</a>
+</div>
+</body>
+</html>

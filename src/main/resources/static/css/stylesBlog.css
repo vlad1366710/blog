@@ -1,0 +1,104 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    display: flex; /* Используем flexbox для выравнивания */
+}
+
+.container {
+    flex: 1; /* Основное содержимое занимает оставшееся пространство */
+    display: flex;
+    flex-direction: column; /* Вертикальное размещение элементов */
+    position: relative; /* Для позиционирования кружка с изображением */
+}
+
+.account-circle {
+    position: absolute; /* Абсолютное позиционирование */
+    top: 20px; /* Отступ сверху */
+    right: 20px; /* Отступ справа */
+}
+
+.profile-image {
+    width: 50px; /* Ширина изображения */
+    height: 50px; /* Высота изображения */
+    border-radius: 50%; /* Округление для создания круга */
+    border: 2px solid #007BFF; /* Обводка */
+}
+
+.sidebar {
+    width: 250px; /* Ширина боковой панели */
+    margin-right: 20px; /* Отступ справа */
+}
+
+.account-info {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    display: flex;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar input {
+    flex: 1; /* Полное использование пространства */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-bar button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.search-bar button:hover {
+    background-color: #0056b3;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    flex: 1; /* Основное содержимое занимает оставшееся пространство */
+}
+
+li {
+    background: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+li:hover {
+    transform: scale(1.02);
+}
+
+a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}

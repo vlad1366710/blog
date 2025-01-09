@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"> <!-- Убедитесь, что кодировка указана -->
+    <title>Блоговый Центр</title>
+    <link rel="stylesheet" type="text/css" href="stylesBlog.css"> <!-- Подключение CSS файла -->
+</head>
+<body>
+<div class="container">
+    <h1>Блоговый Центр</h1>
+    <div class="account-circle">
+        <img src="path/to/your/profile.jpg" alt="Профиль" class="profile-image"> <!-- Замените на путь к изображению профиля -->
+    </div>
+    <div class="sidebar">
+        <div class="account-info">
+            <h2>Аккаунт</h2>
+            <p>Имя пользователя: <strong>Пользователь</strong></p>
+            <p><a href="#">Выйти</a></p>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Поиск...">
+            <button type="button">Найти</button>
+        </div>
+    </div>
+    <ul>
+        <li th:each="post : ${posts}">
+            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
