@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="${post.title}">Пост</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/styleViewPost.css">
 </head>
 <body>
 <div class="container">
@@ -11,6 +11,29 @@
   <p>Автор: <span th:text="${post.author.username}"></span></p>
   <div th:text="${post.content}"></div> <!-- Предположим, что у вас есть поле content -->
   <a th:href="@{/posts}" class="btn btn-secondary">Назад к списку постов</a>
+
+  <hr>
+
+  <h2>Комментарии</h2>
+
+  <!-- Список комментариев -->
+  <div class="comments-list">
+    <div th:each="comment : ${post.comments}">
+      <div class="comment">
+        <p><strong th:text="${comment.user.username}"></strong>: <span th:text="${comment.content}"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Форма для добавления нового комментария -->
+  <h3>Оставить комментарий</h3>
+  <form th:action="@{/posts/{id}/comments(id=${post.id})}" method="post">
+    <div class="form-group">
+      <label for="commentContent">Ваш комментарий</label>
+      <textarea id="commentContent" name="content" class="form-control" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Отправить</button>
+  </form>
 </div>
 </body>
 </html>

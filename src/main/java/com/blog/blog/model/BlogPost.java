@@ -1,11 +1,7 @@
 package com.blog.blog.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 public class BlogPost {
@@ -18,7 +14,10 @@ public class BlogPost {
 
     @ManyToOne // Указываем, что это связь "многие к одному"
     @JoinColumn(name = "author_id") // Указываем имя колонки в базе данных
-    private User  author; // Измените тип на объект CustomUser
+    private User author; // Измените тип на объект CustomUser , если это необходимо
+
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Исправлено на blogPost
+    private Set<Comment> comments;
 
     // Геттеры и сеттеры
     public Long getId() {
@@ -45,11 +44,19 @@ public class BlogPost {
         this.content = content;
     }
 
-    public User  getAuthor() { // Измените тип возвращаемого значения на CustomUser
+    public User getAuthor() { // Измените тип возвращаемого значения на CustomUser , если это необходимо
         return author;
     }
 
-    public void setAuthor(User  author) { // Измените тип аргумента на CustomUser
+    public void setAuthor(User author) { // Измените тип аргумента на CustomUser , если это необходимо
         this.author = author;
+    }
+
+    public Set<Comment> getComments() { // Добавляем геттер для comments
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) { // Добавляем сеттер для comments
+        this.comments = comments;
     }
 }

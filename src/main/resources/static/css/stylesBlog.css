@@ -1,4 +1,3 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -11,25 +10,13 @@ body {
     flex: 1; /* Основное содержимое занимает оставшееся пространство */
     display: flex;
     flex-direction: column; /* Вертикальное размещение элементов */
-    position: relative; /* Для позиционирования кружка с изображением */
-}
-
-.account-circle {
-    position: absolute; /* Абсолютное позиционирование */
-    top: 20px; /* Отступ сверху */
-    right: 20px; /* Отступ справа */
-}
-
-.profile-image {
-    width: 50px; /* Ширина изображения */
-    height: 50px; /* Высота изображения */
-    border-radius: 50%; /* Округление для создания круга */
-    border: 2px solid #007BFF; /* Обводка */
 }
 
 .sidebar {
     width: 250px; /* Ширина боковой панели */
-    margin-right: 20px; /* Отступ справа */
+    margin-left: auto; /* Выравнивание по правому краю */
+    display: flex; /* Используем flexbox для вертикального размещения */
+    flex-direction: column; /* Вертикальное размещение элементов */
 }
 
 .account-info {
@@ -38,6 +25,18 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+}
+
+.account-circle {
+    text-align: center; /* Центрируем изображение внутри блока */
+    margin-bottom: 10px; /* Отступ снизу для разделения с текстом */
+}
+
+.profile-image {
+    width: 50px; /* Ширина изображения */
+    height: 50px; /* Высота изображения */
+    border-radius: 50%; /* Округление для создания круга */
+    border: 2px solid #007BFF; /* Обводка */
 }
 
 .search-bar {
