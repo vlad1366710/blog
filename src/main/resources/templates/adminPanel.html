@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Управление пользователями - Панель Администратора</title>
+  <link rel="stylesheet" type="text/css" href="/css/stylesAdmin.css"> <!-- Подключение CSS файла -->
+  <style>
+    /* Стили для аватаров */
+    .avatar {
+      width: 40px; /* Ширина аватара */
+      height: 40px; /* Высота аватара */
+      border-radius: 50%; /* Круглая форма */
+      object-fit: cover; /* Сохранение пропорций изображения */
+    }
+    .status {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Управление пользователями</h1>
+
+  <section>
+    <h2>Поиск пользователей</h2>
+    <form action="/admin/users/search" method="GET">
+      <input type="text" name="query" placeholder="Введите имя пользователя или email" required>
+      <button type="submit">Поиск</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Список пользователей</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>Аватар</th>
+        <th>Имя пользователя</th>
+        <th>Email</th>
+        <th>Роль</th>
+        <th>Статус</th>
+        <th>Последний вход</th>
+        <th>Действия</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Пример динамического отображения пользователей -->
+      {% for user in users %}
+      <tr>
+        <td>
+          <img src="{{ user.avatar_url }}" alt="Аватар пользователя" class="avatar">
+        </td>
+        <td>{{ user.username }} <span class="status {{ 'active' if user.is_active else 'blocked' }}">{{ 'Активен' if user.is_active else 'Заблокирован' }}</span></td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ 'Активен' if user.is_active else 'Заблокирован' }}</td>
+        <td>{{ user.last_login.strftime('%d.%m.%Y %H:%M') if user.last_login else 'Никогда' }}</td>
+        <td>
+          <a href="/admin/users/edit/{{ user.id }}">Редактировать</a> |
+          <a href="#" onclick="showModal('Вы уверены, что хотите удалить пользователя {{ user.username }}?', '/admin/users/delete/{{ user.id }}')">Удалить</a> |
+          <a href="#" onclick="showModal('Вы уверены, что хотите ' + ({{ user.is_active }} ? 'заблокировать' : 'разблокировать') + ' пользователя {{ user.username }}?', '/admin/users/block/{{ user.id }}')">{{ user.is_active ? 'Заблокировать' : 'Разблокировать' }}</a>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Пагинация</h2>
+    <div class="pagination">
+      {% if page > 1 %}
+      <a href="?page={{ page - 1 }}">Назад</a>
+      {% endif %}
+      {% for p in range(1, total_pages + 1) %}
+      <a href="?page={{ p }}">{{ p }}</a>
+      {% endfor %}
+      {% if page < total_pages %}
+      <a href="?page={{ page + 1 }}">Вперед</a>
+      {% endif %}
+    </div>
+  </section>
+</div>
+
+<!-- Модальное окно для подтверждения действия -->
+<div id="confirmationModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <h2>Подтверждение действия</h2>
+    <p id="modalMessage">Вы уверены, что хотите выполнить это действие?</p>
+    <button id="confirmButton">Подтвердить</button>
+    <button id="cancelButton">Отмена</button>
+  </div>
+</div>
+
+<script>
+  // JavaScript код для управления модальным окном
+  let modal = document.getElementById("confirmationModal");
+  let confirmButton = document.getElementById("confirmButton");
+  let closeModal = document.getElementById("closeModal");
+  let cancelButton = document.getElementById("cancelButton");
+
+  let actionUrl = ""; // URL для подтвержденного действия
+
+  function showModal(message, url) {
+    modal.style.display = "block";
+    document.getElementById("modalMessage").innerText = message;
+    actionUrl = url; // Сохранить URL действия
+  }
+
+  confirmButton.onclick = function() {
+    window.location.href = actionUrl; // Перейти по URL действия
+  }
+
+  closeModal.onclick = function() {
+    modal.style.display = "none"; // Закрыть модальное окно
+  }
+
+  cancelButton.onclick = function() {
+    modal.style.display = "none"; // Закрыть модальное окно
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none"; // Закрыть модальное окно при клике вне его
+    }
+  }
+</script>
+</body>
+</html>

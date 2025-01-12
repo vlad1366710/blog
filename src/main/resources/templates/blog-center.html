@@ -21,12 +21,23 @@
             <input type="text" placeholder="Поиск...">
             <button type="button">Найти</button>
         </div>
+        <nav class="navigation">
+            <h2>Навигация</h2>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/about">О нас</a></li>
+                <li><a href="/contact">Контакты</a></li>
+                <li th:if="${isAdmin}"><a href="/admin">Панель администрирования</a></li> <!-- Ссылка на панель администрирования -->
+            </ul>
+        </nav>
     </div>
-    <ul>
-        <li th:each="post : ${posts}">
-            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a>
-        </li>
-    </ul>
+    <main>
+        <ul>
+            <li th:each="post : ${posts}">
+                <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a>
+            </li>
+        </ul>
+    </main>
 </div>
 </body>
 </html>

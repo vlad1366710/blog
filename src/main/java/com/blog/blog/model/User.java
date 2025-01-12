@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
+
 import java.util.Set;
 
 @Entity
@@ -15,6 +16,8 @@ public class User {
 
     private String username;
     private String password;
+
+    private boolean isAdmin; // Новое поле для проверки прав администратора
 
     @OneToMany(mappedBy = "user")
     private Set<Comment> comments;
@@ -42,6 +45,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAdmin() { // Геттер для isAdmin
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) { // Сеттер для isAdmin
+        isAdmin = admin;
     }
 
     public Set<Comment> getComments() {

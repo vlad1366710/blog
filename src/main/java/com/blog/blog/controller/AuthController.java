@@ -53,8 +53,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute User user) {
-        userService.registerUser (user);
-        return "redirect:/login";
+    public String registerUser (@ModelAttribute User user, Model model) {
+        try {
+            userService.registerUser (user);
+            return "blog-center"; // перенаправление на страницу успеха
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "register"; // возвращаемся на страницу регистрации с ошибкой
+        }
     }
 }
