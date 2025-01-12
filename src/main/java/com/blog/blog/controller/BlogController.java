@@ -72,7 +72,22 @@ public class BlogController {
     @GetMapping("/blog-center")
     public String blogCenter(Model model) {
         model.addAttribute("posts", blogPostService.getAllPosts());
-        return "blog-center"; // Новое имя вашего представления
+
+        // Получаем информацию о текущем пользователе
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = false;
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String currentUsername = authentication.getName(); // Получаем имя пользователя
+            User currentUser  = userService.findByUsername(currentUsername); // Получаем пользователя из базы данных
+
+            if (currentUser  != null) {
+                isAdmin = currentUser .isAdmin(); // Проверяем, является ли пользователь администратором
+            }
+        }
+
+        model.addAttribute("isAdmin", isAdmin); // Добавляем переменную isAdmin в модель
+        return "blog-center"; // Имя вашего представления
     }
 
 // /posts/edit/1
