@@ -10,8 +10,10 @@
     <h1>Блоговый Центр</h1>
 </div>
 <div class="search-bar">
-    <input type="text" placeholder="Поиск...">
-    <button type="button">Найти</button>
+    <form action="#" th:action="@{/blog-center}" method="get">
+        <input type="text" name="query" placeholder="Поиск..." th:value="${query}">
+        <button type="submit">Найти</button>
+    </form>
 </div>
 <div class="container">
     <main>
@@ -23,14 +25,14 @@
 
         <div class="pagination">
             <span th:if="${currentPage > 0}">
-                <a th:href="@{/blog-center(page=${currentPage - 1})}" class="pagination-link">« Назад</a>
+                <a th:href="@{/blog-center(page=${currentPage - 1}, query=${query})}" class="pagination-link">« Назад</a>
             </span>
             <span th:each="page : ${#numbers.sequence(0, totalPages - 1)}">
-                <a th:href="@{/blog-center(page=${page})}" th:text="${page + 1}"
+                <a th:href="@{/blog-center(page=${page}, query=${query})}" th:text="${page + 1}"
                    th:class="${page == currentPage} ? 'pagination-link active' : 'pagination-link'"></a>
             </span>
             <span th:if="${currentPage < totalPages - 1}">
-                <a th:href="@{/blog-center(page=${currentPage + 1})}" class="pagination-link">Вперед »</a>
+                <a th:href="@{/blog-center(page=${currentPage + 1}, query=${query})}" class="pagination-link">Вперед »</a>
             </span>
         </div>
     </main>

@@ -33,4 +33,8 @@ public class BlogPostService {
         Optional<BlogPost> post = blogPostRepository.findById(id);
         return post.orElse(null); // Возвращаем пост или null, если не найден
     }
+
+    public Page<BlogPost> searchPosts(String query, Pageable pageable) {
+        return blogPostRepository.findByTitleContainingIgnoreCase(query, pageable);
+    }
 }

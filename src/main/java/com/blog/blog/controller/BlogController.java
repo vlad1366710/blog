@@ -78,23 +78,31 @@ public class BlogController {
     }
 
     @GetMapping("/blog-center")
-    public String blogCenter(@RequestParam(defaultValue = "0") int page, Model model) {
+    public String blogCenter(@RequestParam(defaultValue = "") String query,
+                             @RequestParam(defaultValue = "0") int page,
+                             Model model) {
         // Создаем объект Pageable для пагинации
-        Pageable pageable = (Pageable) PageRequest.of(page, 10); // 5 постов на странице
+        Pageable pageable = PageRequest.of(page, 10); // 10 постов на странице
 
-        // Получаем посты с учетом пагинации
-        Page<BlogPost> postsPage = blogPostService.getAllPostss(pageable); // Измените метод в сервисе для возврата Page<BlogPost>
+        Page<BlogPost> postsPage;
+
+        if (query.isEmpty()) {
+            // Если запрос пустой, получаем все посты
+            postsPage = blogPostService.getAllPostss(pageable);
+        } else {
+            // Если есть запрос, выполняем поиск
+            postsPage = blogPostService.searchPosts(query, pageable);
+        }
 
         model.addAttribute("posts", postsPage.getContent()); // Получаем содержимое текущей страницы
         model.addAttribute("currentPage", page); // Текущая страница
         model.addAttribute("totalPages", postsPage.getTotalPages()); // Общее количество страниц
+        model.addAttribute("query", query); // Добавляем поисковый запрос в модель
+        model.addAttribute("isAdmin", accountService.isAdmin()); // Добавляем переменную isAdmin в модель
 
-
-
-
-        model.addAttribute("isAdmin", accountService.isAdmin() ); // Добавляем переменную isAdmin в модель
         return "blog-center"; // Имя вашего представления
     }
+
 
 // /posts/edit/1
     // http://localhost:8080/posts/1
