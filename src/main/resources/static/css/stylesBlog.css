@@ -3,18 +3,24 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 20px;
-    display: flex; /* Используем flexbox для выравнивания */
+}
+
+.text {
+    text-align: center; /* Центрируем заголовок */
 }
 
 .container {
-    flex: 1; /* Основное содержимое занимает оставшееся пространство */
-    display: flex;
-    flex-direction: column; /* Вертикальное размещение элементов */
+    display: flex; /* Используем flexbox для размещения контента и боковой панели */
+    margin-top: 20px; /* Отступ сверху для разделения с заголовком */
+}
+
+main {
+    flex: 3; /* Основное содержимое занимает больше места */
 }
 
 .sidebar {
     width: 250px; /* Ширина боковой панели */
-    margin-left: auto; /* Выравнивание по правому краю */
+    margin-left: 20px; /* Отступ слева для разделения */
     display: flex; /* Используем flexbox для вертикального размещения */
     flex-direction: column; /* Вертикальное размещение элементов */
 }
@@ -68,15 +74,9 @@ body {
     background-color: #0056b3;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-}
-
 ul {
     list-style-type: none;
     padding: 0;
-    flex: 1; /* Основное содержимое занимает оставшееся пространство */
 }
 
 li {
@@ -100,4 +100,29 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+.pagination {
+    display: flex;
+    justify-content: center; /* Центрируем пагинацию */
+    margin: 20px 0; /* Отступы сверху и снизу */
+}
+
+.pagination-link {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 0 5px; /* Отступ между ссылками */
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.pagination-link:hover {
+    background-color: #0056b3; /* Цвет при наведении */
+}
+
+.pagination-link.active {
+    background-color: #0056b3; /* Цвет для активной страницы */
+    font-weight: bold; /* Жирный текст для активной страницы */
 }

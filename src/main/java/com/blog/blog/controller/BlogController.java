@@ -5,11 +5,15 @@ import com.blog.blog.model.User;
 import com.blog.blog.service.BlogPostService;
 import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.data.domain.Pageable;
 
 @Controller
 public class BlogController {
@@ -70,8 +74,16 @@ public class BlogController {
     }
 
     @GetMapping("/blog-center")
-    public String blogCenter(Model model) {
-        model.addAttribute("posts", blogPostService.getAllPosts());
+    public String blogCenter(@RequestParam(defaultValue = "0") int page, Model model) {
+        // Создаем объект Pageable для пагинации
+        Pageable pageable = (Pageable) PageRequest.of(page, 5); // 5 постов на странице
+
+        // Получаем посты с учетом пагинации
+        Page<BlogPost> postsPage = blogPostService.getAllPostss(pageable); // Измените метод в сервисе для возврата Page<BlogPost>
+
+        model.addAttribute("posts", postsPage.getContent()); // Получаем содержимое текущей страницы
+        model.addAttribute("currentPage", page); // Текущая страница
+        model.addAttribute("totalPages", postsPage.getTotalPages()); // Общее количество страниц
 
         // Получаем информацию о текущем пользователе
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

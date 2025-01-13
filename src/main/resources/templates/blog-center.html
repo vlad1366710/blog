@@ -1,20 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"> <!-- Убедитесь, что кодировка указана -->
+    <meta charset="UTF-8">
     <title>Блоговый Центр</title>
-    <link rel="stylesheet" type="text/css" href="/css/stylesBlog.css"> <!-- Подключение CSS файла -->
+    <link rel="stylesheet" type="text/css" href="/css/stylesBlog.css">
 </head>
 <body>
-<div class="container">
+<div class="text">
     <h1>Блоговый Центр</h1>
+</div>
+<div class="container">
+    <main>
+        <ul>
+            <li th:each="post : ${posts}">
+                <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a>
+            </li>
+        </ul>
+
+        <div class="pagination">
+            <span th:if="${currentPage > 0}">
+                <a th:href="@{/blog-center(page=${currentPage - 1})}" class="pagination-link">« Назад</a>
+            </span>
+            <span th:each="page : ${#numbers.sequence(0, totalPages - 1)}">
+                <a th:href="@{/blog-center(page=${page})}" th:text="${page + 1}"
+                   th:class="${page == currentPage} ? 'pagination-link active' : 'pagination-link'"></a>
+            </span>
+            <span th:if="${currentPage < totalPages - 1}">
+                <a th:href="@{/blog-center(page=${currentPage + 1})}" class="pagination-link">Вперед »</a>
+            </span>
+        </div>
+    </main>
+
     <div class="sidebar">
         <div class="account-info">
             <h2>Аккаунт</h2>
             <div class="account-circle">
-                <img src="path/to/your/profile.jpg" alt="Профиль" class="profile-image"> <!-- Замените на путь к изображению профиля -->
+                <img src="path/to/your/profile.jpg" alt="Профиль" class="profile-image">
             </div>
             <p>Имя пользователя: <strong>Пользователь</strong></p>
+            <p>Роль: <strong>Пользователь</strong></p>
             <p><a href="#">Выйти</a></p>
         </div>
         <div class="search-bar">
@@ -27,17 +51,10 @@
                 <li><a href="/blog-center">Главная</a></li>
                 <li><a href="/aboutUs">О нас</a></li>
                 <li><a href="/contacts">Контакты</a></li>
-                <li th:if="${isAdmin}"><a href="/admin">Панель администрирования</a></li> <!-- Ссылка на панель администрирования -->
+                <li th:if="${isAdmin}"><a href="/admin">Панель администрирования</a></li>
             </ul>
         </nav>
     </div>
-    <main>
-        <ul>
-            <li th:each="post : ${posts}">
-                <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a>
-            </li>
-        </ul>
-    </main>
 </div>
 </body>
 </html>
