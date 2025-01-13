@@ -2,7 +2,6 @@ package com.blog.blog.controller;
 
 import com.blog.blog.model.Comment;
 import com.blog.blog.service.CommentService;
-import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +22,10 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment addComment(@PathVariable Long postId, @RequestParam String content) {
+    public void addComment(@PathVariable Long postId, @RequestParam String content) {
         Comment comment = new Comment();
         comment.setContent(content);
-        return commentService.addCommentToPost(postId, comment);
+        commentService.addCommentToPost(postId, comment);
     }
 
 

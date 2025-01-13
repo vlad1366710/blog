@@ -39,11 +39,44 @@
       border-radius: 5px;
       text-align: center;
     }
+    .navigation {
+      margin-bottom: 20px;
+      background: #eaeaea;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .navigation h2 {
+      margin: 0 0 10px;
+    }
+    .navigation ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .navigation ul li {
+      margin: 5px 0;
+    }
+    .navigation ul li a {
+      text-decoration: none;
+      color: #333;
+    }
+    .navigation ul li a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
+  <nav class="navigation">
+    <h2>Навигация</h2>
+    <ul>
+      <li><a href="/blog-center">Главная</a></li>
+      <li><a href="/aboutUs">О нас</a></li>
+      <li><a href="/contacts">Контакты</a></li>
+      <li th:if="${isAdmin}"><a href="/admin">Панель администрирования</a></li> <!-- Ссылка на панель администрирования -->
+    </ul>
+  </nav>
+
   <h1>О нас</h1>
   <p>Добро пожаловать на наш блог! Мы - команда увлеченных людей, которые любят делиться своими мыслями, идеями и опытом с вами. Наша цель - создать пространство, где каждый может найти что-то интересное и полезное.</p>
 
