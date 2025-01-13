@@ -45,6 +45,9 @@
             </div>
             <p>Имя пользователя: <strong th:text="${currentUser .username}">Пользователь</strong></p>
             <p>Роль: <strong th:text="${currentUser .role}">Пользователь</strong></p>
+            <p>
+                <a th:href="@{/account-settings}" class="settings-button">Настройки аккаунта</a>
+            </p>
             <p><a th:href="@{/logout}">Выйти</a></p>
         </div>
 

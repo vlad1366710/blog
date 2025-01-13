@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Настройки аккаунта</title>
+  <link rel="stylesheet" type="text/css" href="/css/stylesBlog.css">
+</head>
+<body>
+<div class="text">
+  <h1>Настройки аккаунта</h1>
+</div>
+<div class="container">
+  <div class="account-settings">
+    <h2>Изменить настройки</h2>
+    <form action="#" th:action="@{/update-account}" method="post">
+      <div class="form-group">
+        <label for="username">Имя пользователя:</label>
+        <input type="text" id="username" name="username" th:value="${currentUser .username}" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" placeholder="Введите новый пароль">
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Подтверждение пароля:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Подтвердите новый пароль">
+      </div>
+      <button type="submit">Сохранить изменения</button>
+    </form>
+    <p><a th:href="@{/blog-center}">Назад к блогу</a></p>
+  </div>
+</div>
+</body>
+</html>
