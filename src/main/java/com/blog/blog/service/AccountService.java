@@ -23,9 +23,9 @@ public class AccountService {
         return currentUser;
     }
 
-    public boolean isAdmin(){
-        boolean isAdmin;
-        isAdmin = getUserInfo().isAdmin();
-        return isAdmin;
+    public boolean isAdmin() {
+        User currentUser  = getUserInfo(); // Получаем информацию о текущем пользователе
+        return currentUser  != null && currentUser .isAdmin(); // Проверяем, что пользователь не null и является администратором
     }
+
 }

@@ -38,15 +38,22 @@
     </main>
 
     <div class="sidebar">
-        <div class="account-info">
+        <div class="account-info" th:if="${currentUser  != null}">
             <h2>Аккаунт</h2>
             <div class="account-circle">
                 <img src="path/to/your/profile.jpg" alt="Профиль" class="profile-image">
             </div>
-            <p>Имя пользователя: <strong>Пользователь</strong></p>
-            <p>Роль: <strong>Пользователь</strong></p>
-            <p><a href="#">Выйти</a></p>
+            <p>Имя пользователя: <strong th:text="${currentUser .username}">Пользователь</strong></p>
+            <p>Роль: <strong th:text="${currentUser .role}">Пользователь</strong></p>
+            <p><a th:href="@{/logout}">Выйти</a></p>
         </div>
+
+        <div class="account-info" th:if="${currentUser  == null}">
+            <h2>Аккаунт</h2>
+            <p>Вы не авторизованы.</p>
+            <p><a th:href="@{/login}">Войти</a> или <a th:href="@{/register}">Зарегистрироваться</a></p>
+        </div>
+
         <nav class="navigation">
             <h2>Навигация</h2>
             <ul>

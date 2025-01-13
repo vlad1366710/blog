@@ -99,6 +99,7 @@ public class BlogController {
         model.addAttribute("totalPages", postsPage.getTotalPages()); // Общее количество страниц
         model.addAttribute("query", query); // Добавляем поисковый запрос в модель
         model.addAttribute("isAdmin", accountService.isAdmin()); // Добавляем переменную isAdmin в модель
+        model.addAttribute("currentUser", accountService.getUserInfo());
 
         return "blog-center"; // Имя вашего представления
     }
