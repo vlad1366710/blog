@@ -2,6 +2,7 @@ package com.blog.blog.controller;
 
 import com.blog.blog.model.BlogPost;
 import com.blog.blog.model.User;
+import com.blog.blog.service.AccountService;
 import com.blog.blog.service.BlogPostService;
 import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class BlogController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AccountService accountService;
 
     @GetMapping("/posts")
     public String getAllPosts(Model model) {
@@ -76,7 +80,7 @@ public class BlogController {
     @GetMapping("/blog-center")
     public String blogCenter(@RequestParam(defaultValue = "0") int page, Model model) {
         // Создаем объект Pageable для пагинации
-        Pageable pageable = (Pageable) PageRequest.of(page, 5); // 5 постов на странице
+        Pageable pageable = (Pageable) PageRequest.of(page, 10); // 5 постов на странице
 
         // Получаем посты с учетом пагинации
         Page<BlogPost> postsPage = blogPostService.getAllPostss(pageable); // Измените метод в сервисе для возврата Page<BlogPost>
@@ -85,20 +89,10 @@ public class BlogController {
         model.addAttribute("currentPage", page); // Текущая страница
         model.addAttribute("totalPages", postsPage.getTotalPages()); // Общее количество страниц
 
-        // Получаем информацию о текущем пользователе
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = false;
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            String currentUsername = authentication.getName(); // Получаем имя пользователя
-            User currentUser  = userService.findByUsername(currentUsername); // Получаем пользователя из базы данных
 
-            if (currentUser  != null) {
-                isAdmin = currentUser .isAdmin(); // Проверяем, является ли пользователь администратором
-            }
-        }
 
-        model.addAttribute("isAdmin", isAdmin); // Добавляем переменную isAdmin в модель
+        model.addAttribute("isAdmin", accountService.isAdmin() ); // Добавляем переменную isAdmin в модель
         return "blog-center"; // Имя вашего представления
     }
 
