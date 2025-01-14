@@ -18,7 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/blog-center"," /register", "/login", "/css/**", "/js/**", "/images/**").permitAll() // Добавьте разрешение для статических ресурсов
+                        .requestMatchers("/blog-center", "/register", "/login", "/css/**", "/js/**", "/images/**").permitAll() // Убрали лишний пробел
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -38,4 +38,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-

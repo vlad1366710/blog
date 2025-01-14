@@ -11,22 +11,16 @@ import org.springframework.stereotype.Service;
 public class AccountService {
 
 
-    @Autowired
-    private UserService userService;
 
-    public User getUserInfo(){
+
+    public String getUserName(){
         // Получаем информацию о текущем пользователе
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName(); // Получаем имя пользователя
-        User currentUser = userService.findByUsername(currentUsername); // Получаем пользователя из базы данных
 
-        return currentUser;
+        return currentUsername;
     }
 
-    public boolean isAdmin() {
-        User currentUser  = getUserInfo(); // Получаем информацию о текущем пользователе
-        return currentUser  != null && currentUser .isAdmin(); // Проверяем, что пользователь не null и является администратором
-    }
 
 }
 

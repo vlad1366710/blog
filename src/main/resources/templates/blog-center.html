@@ -19,12 +19,15 @@
     <main>
         <ul>
             <li th:each="post : ${posts}">
-                <div class="post-item">
-                    <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a>
-                    <p class="post-author">Автор: <strong th:text="${post.author.username}">Имя автора</strong></p>
-                </div>
+                <a th:href="@{/posts/{id}(id=${post.id})}" class="post-item"> <!-- Обернули весь блок в <a> -->
+                    <div class="post-item-content">
+                        <h2 th:text="${post.title}"></h2> <!-- Заголовок поста -->
+                        <p class="post-author">Автор: <strong th:text="${post.author.username}">Имя автора</strong></p>
+                    </div>
+                </a>
             </li>
         </ul>
+
 
         <div class="pagination">
             <span th:if="${currentPage > 0}">
@@ -41,18 +44,23 @@
     </main>
 
     <div class="sidebar">
-        <div class="account-info" th:if="${currentUser   != null}">
+        <div class="account-info" th:if="${currentUser  != null}">
             <h2>Аккаунт</h2>
-            <div class="account-circle">
-                <img th:src="${currentUser .avatarUrl}"  alt="Профиль" class="profile-image">
+            <div class="account-details">
+                <div class="account-circle">
+                    <img th:src="${currentUser .avatarUrl}" alt="Профиль" class="profile-image">
+                </div>
+                <div class="account-text">
+                    <p>Имя пользователя: <strong th:text="${currentUser .userLogin}">Пользователь</strong></p>
+                    <p>Роль: <strong th:text="${currentUser .role}">Пользователь</strong></p>
+                </div>
             </div>
-            <p>Имя пользователя: <strong th:text="${currentUser  .username}">Пользователь</strong></p>
-            <p>Роль: <strong th:text="${currentUser  .role}">Пользователь</strong></p>
             <p>
                 <a th:href="@{/account-settings}" class="settings-button">Настройки аккаунта</a>
             </p>
             <p><a th:href="@{/logout}">Выйти</a></p>
         </div>
+
 
         <div class="account-info" th:if="${currentUser   == null}">
             <h2>Аккаунт</h2>

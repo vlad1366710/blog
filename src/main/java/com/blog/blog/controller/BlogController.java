@@ -50,7 +50,7 @@ public class BlogController {
             String currentUsername = authentication.getName(); // Получаем имя пользователя
 
             // Получаем пользователя из базы данных по имени
-            User currentUser = userService.findByUsername(currentUsername); // Убедитесь, что метод возвращает CustomUser
+            User currentUser = userService.findByUserLogin(currentUsername); // Убедитесь, что метод возвращает CustomUser
             if (currentUser != null) {
                 post.setAuthor(currentUser); // Устанавливаем объект пользователя как автора поста
             }
@@ -98,8 +98,8 @@ public class BlogController {
         model.addAttribute("currentPage", page); // Текущая страница
         model.addAttribute("totalPages", postsPage.getTotalPages()); // Общее количество страниц
         model.addAttribute("query", query); // Добавляем поисковый запрос в модель
-        model.addAttribute("isAdmin", accountService.isAdmin()); // Добавляем переменную isAdmin в модель
-        model.addAttribute("currentUser", accountService.getUserInfo());
+        model.addAttribute("isAdmin", userService.isAdmin(accountService.getUserName())); // Добавляем переменную isAdmin в модель
+        model.addAttribute("currentUser", userService.getUserInfo(accountService.getUserName()));
 
         return "blog-center"; // Имя вашего представления
     }

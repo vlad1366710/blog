@@ -42,10 +42,10 @@ public class CommentService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            String currentUsername = authentication.getName(); // Получаем имя пользователя
+            String currentUserLogin = authentication.getName(); // Получаем имя пользователя
 
             // Получаем пользователя из базы данных по имени
-            User currentUser = userService.findByUsername(currentUsername); // Убедитесь, что метод возвращает CustomUser
+            User currentUser = userService.findByUserLogin(currentUserLogin); // Убедитесь, что метод возвращает CustomUser
             if (currentUser != null) {
                 comment.setUser(currentUser); // Устанавливаем объект пользователя как автора поста
             }

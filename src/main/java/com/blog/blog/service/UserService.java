@@ -17,6 +17,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AccountService accountService;
+
     public void registerUser (User user) throws IllegalArgumentException {
         validatePassword(user.getPassword()); // Проверка пароля
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -30,8 +33,8 @@ public class UserService {
         // Добавьте дополнительные условия по мере необходимости
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUserLogin(String Login) {
+        return userRepository.findByUsername(Login);
     }
     public static final int USERS_PER_PAGE = 10;
 
@@ -44,7 +47,39 @@ public class UserService {
         return (int) userRepository.count();
     }
 
+    public void updateUser (String newUsername, String newPassword) {
+        User user = getUserInfo(accountService.getUserName());
+        if (user == null) {
+            throw new IllegalArgumentException("Пользователь не найден.");
+        }
+
+        if (newUsername != null) {
+            user.setUsername(newUsername);
+        }
+
+        // Если новый пароль предоставлен, обновляем его
+        if (newPassword != null && !newPassword.isEmpty()) {
+            validatePassword(newPassword); // Проверка нового пароля
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+
+        // Обновляем информацию о пользователе в базе данных
+        userRepository.save(user);
+    }
+
+
     public void updateUser (User user) {
         userRepository.save(user); // Сохраняем изменения в базе данных
     }
+
+    public User getUserInfo(String currentUserLogin) {
+        User currentUser = findByUserLogin(currentUserLogin);
+        return currentUser;
+    }
+
+    public boolean isAdmin(String currentUsername) {
+        User currentUser  = getUserInfo(currentUsername); // Получаем информацию о текущем пользователе
+        return currentUser  != null && currentUser .isAdmin(); // Проверяем, что пользователь не null и является администратором
+    }
+
 }

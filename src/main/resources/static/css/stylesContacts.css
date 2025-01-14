@@ -11,6 +11,7 @@ body {
 
 .container {
     display: flex; /* Используем flexbox для размещения контента и боковой панели */
+    flex: 1; /* Позволяем контейнеру занимать доступное пространство */
     margin-top: 20px; /* Отступ сверху для разделения с заголовком */
 }
 
@@ -41,10 +42,12 @@ main {
 .account-circle {
     margin-bottom: 10px; /* Отступ снизу для разделения с текстом */
 }
+
 .account-text {
     display: flex;
     flex-direction: column; /* Вертикальное расположение текста */
 }
+
 .profile-image {
     width: 50px; /* Ширина изображения */
     height: 50px; /* Высота изображения */
@@ -138,4 +141,40 @@ a:hover {
 .pagination-link.active {
     background-color: #0056b3; /* Цвет для активной страницы */
     font-weight: bold; /* Жирный текст для активной страницы */
+}
+
+/* Стили для формы обратной связи */
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: calc(100% - 20px); /* Ширина с учетом отступов */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button[type="submit"] {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3; /* Цвет при наведении */
 }

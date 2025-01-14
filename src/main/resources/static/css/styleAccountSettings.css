@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.text {
+    text-align: center; /* Центрируем заголовок */
+    margin-bottom: 20px; /* Отступ снизу для разделения с контентом */
+}
+
+.container {
+    display: flex; /* Используем flexbox для размещения контента */
+    justify-content: center; /* Центрируем содержимое */
+    margin-top: 20px; /* Отступ сверху для разделения с заголовком */
+}
+
+.account-settings {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px; /* Максимальная ширина для формы */
+}
+
+h2 {
+    margin-top: 20px; /* Отступ сверху для заголовков форм */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Отступ между группами полей */
+}
+
+label {
+    display: block; /* Отображаем метки как блочные элементы */
+    margin-bottom: 5px; /* Отступ снизу для меток */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"] {
+    width: calc(100% - 20px); /* Ширина с учетом отступов */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px; /* Отступ сверху для кнопок */
+}
+
+button:hover {
+    background-color: #0056b3; /* Цвет при наведении */
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+    color: red;
+    margin-top: 10px;
+}

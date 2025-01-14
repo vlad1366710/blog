@@ -28,7 +28,7 @@ public class AccountSettings {
     public String login(@RequestParam(value = "error", required = false) String error, Model model) {
 
 
-        model.addAttribute("currentUser", accountService.getUserInfo());
+        model.addAttribute("currentUser",userService.getUserInfo(accountService.getUserName()));
 
 
         return "account-settings"; // Возвращает страницу логина
@@ -48,10 +48,10 @@ public class AccountSettings {
             // Создаем файл на сервере
             File uploadFile = new File(uploadDir + file.getOriginalFilename());
             file.transferTo(uploadFile); // Сохраняем файл
-            User currentUser  = accountService.getUserInfo();
+            User currentUser  = userService.getUserInfo(accountService.getUserName());
             // Вы можете добавить логику для сохранения информации о пользователе или аватаре в базе данных
             currentUser .setAvatarUrl("/image/" + file.getOriginalFilename()); // Устанавливаем новое значение поля
-            userService.updateUser (currentUser );
+            userService.updateUser(currentUser );
 
 
             redirectAttributes.addFlashAttribute("message", "Аватар успешно загружен.");
@@ -62,6 +62,34 @@ public class AccountSettings {
 
         return "redirect:/account-settings"; // Перенаправление на страницу настроек аккаунта
     }
+
+
+    @PostMapping("/update-account")
+    public String updateAccount(
+            @RequestParam("username") String username,
+            @RequestParam(value = "password", required = false) String password,
+            RedirectAttributes redirectAttributes) {
+        try {
+            // Обновляем информацию о пользователе
+            userService.updateUser (username, password); // Используем новый метод обновления
+            String name = accountService.getUserName();
+            // Добавляем сообщение об успешном обновлении
+            redirectAttributes.addFlashAttribute("successMessage", "Настройки успешно обновлены.");
+            
+            // Перенаправляем на страницу настроек аккаунта
+            return "redirect:/account-settings"; // Укажите правильный путь к странице настроек
+        } catch (IllegalArgumentException e) {
+            // Обработка ошибок (например, если пользователь не найден)
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/account-settings"; // Перенаправляем обратно на страницу настроек
+        } catch (Exception e) {
+            // Обработка других исключений
+            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении настроек. Попробуйте еще раз.");
+            return "redirect:/account-settings"; // Перенаправляем обратно на страницу настроек
+        }
+    }
+
 }
+
 
 

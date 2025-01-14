@@ -4,103 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>О нас</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Подключите свой CSS файл -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    h1, h2 {
-      color: #333;
-    }
-    p {
-      line-height: 1.6;
-      color: #555;
-    }
-    .team {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .team-member {
-      flex: 1 1 calc(33% - 20px);
-      background: #eaeaea;
-      padding: 10px;
-      border-radius: 5px;
-      text-align: center;
-    }
-    .navigation {
-      margin-bottom: 20px;
-      background: #eaeaea;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    .navigation h2 {
-      margin: 0 0 10px;
-    }
-    .navigation ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    .navigation ul li {
-      margin: 5px 0;
-    }
-    .navigation ul li a {
-      text-decoration: none;
-      color: #333;
-    }
-    .navigation ul li a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/styleAboutUs.css"> <!-- Подключите свой CSS файл -->
 </head>
 <body>
 
+<div class="text">
+  <h1>О нас</h1>
+</div>
+
 <div class="container">
-  <nav class="navigation">
-    <h2>Навигация</h2>
+  <main>
+    <p>Добро пожаловать на наш блог! Мы - команда увлеченных людей, которые любят делиться своими мыслями, идеями и опытом с вами. Наша цель - создать пространство, где каждый может найти что-то интересное и полезное.</p>
+
+    <h2>Наша миссия</h2>
+    <p>Мы стремимся вдохновлять и информировать наших читателей, предоставляя качественный контент на разнообразные темы, включая технологии, здоровье, путешествия и многое другое.</p>
+
+    <h2>Наша команда</h2>
+    <div class="team">
+      <div class="team-member">
+        <h3>Иван Иванов</h3>
+        <p>Основатель и главный редактор</p>
+      </div>
+      <div class="team-member">
+        <h3>Мария Петрова</h3>
+        <p>Контент-менеджер</p>
+      </div>
+    </div>
+
+    <h2>Связаться с нами</h2>
+    <p>Если у вас есть вопросы или предложения, не стесняйтесь связаться с нами по электронной почте: <a class="contact-link" href="mailto:info@blog.com">info@blog.com</a>.</p>
+  </main>
+
+  <aside class="sidebar">
+      <div class="account-info" th:if="${currentUser  != null}">
+        <h2>Аккаунт</h2>
+        <div class="account-details">
+          <div class="account-circle">
+            <img th:src="${currentUser .avatarUrl}" alt="Профиль" class="profile-image">
+          </div>
+          <div class="account-text">
+            <p>Имя пользователя: <strong th:text="${currentUser .username}">Пользователь</strong></p>
+            <p>Роль: <strong th:text="${currentUser .role}">Пользователь</strong></p>
+          </div>
+        </div>
+        <p>
+          <a th:href="@{/account-settings}" class="settings-button">Настройки аккаунта</a>
+        </p>
+        <p><a th:href="@{/logout}">Выйти</a></p>
+      </div>
+
+
+      <div class="account-info" th:if="${currentUser   == null}">
+        <h2>Аккаунт</h2>
+        <p>Вы не авторизованы.</p>
+        <p><a th:href="@{/login}">Войти</a> или <a th:href="@{/register}">Зарегистрироваться</a></p>
+      </div>
+
+
+
+    <h3>Навигация</h3>
     <ul>
       <li><a href="/blog-center">Главная</a></li>
       <li><a href="/aboutUs">О нас</a></li>
       <li><a href="/contacts">Контакты</a></li>
-      <li th:if="${isAdmin}"><a href="/admin">Панель администрирования</a></li> <!-- Ссылка на панель администрирования -->
+      <li th:if="${isAdmin}"><a href="/admin">Панель администрирования</a></li>
     </ul>
-  </nav>
-
-  <h1>О нас</h1>
-  <p>Добро пожаловать на наш блог! Мы - команда увлеченных людей, которые любят делиться своими мыслями, идеями и опытом с вами. Наша цель - создать пространство, где каждый может найти что-то интересное и полезное.</p>
-
-  <h2>Наша миссия</h2>
-  <p>Мы стремимся вдохновлять и информировать наших читателей, предоставляя качественный контент на разнообразные темы, включая технологии, здоровье, путешествия и многое другое.</p>
-
-  <h2>Наша команда</h2>
-  <div class="team">
-    <div class="team-member">
-      <h3>Иван Иванов</h3>
-      <p>Основатель и главный редактор</p>
-    </div>
-    <div class="team-member">
-      <h3>Мария Петрова</h3>
-      <p>Контент-менеджер</p>
-    </div>
-    <div class="team-member">
-      <h3>Сергей Смирнов</h3>
-      <p>Автор статей</p>
-    </div>
-  </div>
-
-  <h2>Связаться с нами</h2>
-  <p>Если у вас есть вопросы или предложения, не стесняйтесь связаться с нами по электронной почте: <a href="mailto:info@blog.com">info@blog.com</a>.</p>
+  </aside>
 </div>
 
 </body>

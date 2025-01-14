@@ -25,11 +25,11 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public String login(@RequestParam("username") String username,
+    public String login(@RequestParam("username") String userLogin,
                         @RequestParam("password") String password,
                         Model model) {
         // Проверяем, существует ли пользователь
-        User user = userService.findByUsername(username);
+        User user = userService.findByUserLogin(userLogin);
 
         if (user == null) {
             model.addAttribute("error", "Пользователь не найден");

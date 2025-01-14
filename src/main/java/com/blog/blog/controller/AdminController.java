@@ -24,8 +24,8 @@ public class AdminController {
 
         // Проверяем, является ли пользователь администратором
         if (authentication != null && authentication.isAuthenticated()) {
-            String currentUsername = authentication.getName();
-            User currentUser  = userService.findByUsername(currentUsername);
+            String currentUserLogin = authentication.getName();
+            User currentUser  = userService.findByUserLogin(currentUserLogin);
 
             if (currentUser  != null && currentUser.isAdmin()) {
                 // Получаем пользователей из сервиса

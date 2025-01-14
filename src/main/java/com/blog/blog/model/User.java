@@ -15,6 +15,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String userLogin; // Новое поле для логина
     private String username;
     private String password;
 
@@ -22,9 +23,9 @@ public class User {
     private boolean isActive; // Поле для проверки активности пользователя
     private String avatarUrl; // Поле для URL аватара
     private String email; // Поле для хранения email
-    private String role; // Новое поле для хранения роли пользователя
+    private String role; // Поле для хранения роли пользователя
 
-    private LocalDateTime lastLogin; // Добавлено поле для хранения времени последнего входа
+    private LocalDateTime lastLogin; // Поле для хранения времени последнего входа
 
     @OneToMany(mappedBy = "user")
     private Set<Comment> comments;
@@ -36,6 +37,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserLogin() { // Измените на getUser Login
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) { // Измените на setUser Login
+        this.userLogin = userLogin;
     }
 
     public String getUsername() {

@@ -41,10 +41,12 @@ main {
 .account-circle {
     margin-bottom: 10px; /* Отступ снизу для разделения с текстом */
 }
+
 .account-text {
     display: flex;
     flex-direction: column; /* Вертикальное расположение текста */
 }
+
 .profile-image {
     width: 50px; /* Ширина изображения */
     height: 50px; /* Высота изображения */
