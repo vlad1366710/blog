@@ -43,4 +43,8 @@ public class UserService {
     public int getTotalUsers() {
         return (int) userRepository.count();
     }
+
+    public void updateUser (User user) {
+        userRepository.save(user); // Сохраняем изменения в базе данных
+    }
 }

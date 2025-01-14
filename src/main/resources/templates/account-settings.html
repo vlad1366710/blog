@@ -27,6 +27,13 @@
       </div>
       <button type="submit">Сохранить изменения</button>
     </form>
+
+    <h2>Загрузить аватар</h2>
+    <form action="#" th:action="@{/upload-avatar}" method="post" enctype="multipart/form-data">
+      <input type="file" name="avatar" accept="image/*" required>
+      <button type="submit">Загрузить аватар</button>
+    </form>
+
     <p><a th:href="@{/blog-center}">Назад к блогу</a></p>
   </div>
 </div>
