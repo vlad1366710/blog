@@ -58,7 +58,9 @@
             <p>
                 <a th:href="@{/account-settings}" class="settings-button">Настройки аккаунта</a>
             </p>
-            <p><a th:href="@{/logout}">Выйти</a></p>
+            <form action="#" th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Выйти</button>
+            </form>
         </div>
 
 

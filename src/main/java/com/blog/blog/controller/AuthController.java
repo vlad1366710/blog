@@ -3,6 +3,8 @@ package com.blog.blog.controller;
 import com.blog.blog.model.User;
 import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,4 +67,5 @@ public class AuthController {
             return "register"; // возвращаемся на страницу регистрации с ошибкой
         }
     }
+
 }
