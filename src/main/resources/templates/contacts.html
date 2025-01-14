@@ -13,7 +13,9 @@
     <h1>Контакты</h1>
     <p>Если у вас есть вопросы, предложения или комментарии, пожалуйста, заполните форму ниже, и мы свяжемся с вами как можно скорее.</p>
 
-    <form action="submit_form.php" method="post"> <!-- Укажите свой обработчик формы -->
+    <!-- Обновлено действие формы -->
+    <form action="/send-message" method="post">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
       <label for="name">Ваше имя:</label>
       <input type="text" id="name" name="name" required>
 
@@ -25,6 +27,10 @@
 
       <button type="submit">Отправить</button>
     </form>
+
+    <!-- Блок для отображения сообщений об успехе и ошибках -->
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
     <h2>Наши контактные данные</h2>
     <p>Email: <a href="mailto:info@blog.com">info@blog.com</a></p>
