@@ -55,6 +55,9 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser (@ModelAttribute User user, Model model) {
         try {
+
+            user.setAvatarUrl("/image/i.webp");// Устанавливаем новое значение поля
+            user.setRole("Пользователь");
             userService.registerUser (user);
             return "blog-center"; // перенаправление на страницу успеха
         } catch (IllegalArgumentException e) {
