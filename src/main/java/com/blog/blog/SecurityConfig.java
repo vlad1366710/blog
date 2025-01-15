@@ -22,7 +22,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/blog-center", "/aboutUs" , "/contacts", "/send-message", "/register", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/blog-center","/posts/{id}", "/aboutUs" , "/contacts", "/send-message", "/register", "/login", "/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

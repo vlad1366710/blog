@@ -20,6 +20,7 @@ public class AboutController {
 
     @GetMapping("/aboutUs")
     public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+        model.addAttribute("isAdmin", userService.isAdmin(accountService.getUserName())); // Добавляем переменную isAdmin в модель
         model.addAttribute("currentUser", userService.getUserInfo(accountService.getUserName()));
         return "aboutUs"; // Возвращает страницу логина
     }

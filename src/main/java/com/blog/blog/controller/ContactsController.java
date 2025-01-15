@@ -20,6 +20,7 @@ public class ContactsController {
     @GetMapping("/contacts")
     public String login(@RequestParam(value = "error", required = false) String error, Model model) {
         model.addAttribute("currentUser", userService.getUserInfo(accountService.getUserName()));
+        model.addAttribute("isAdmin", userService.isAdmin(accountService.getUserName())); // Добавляем переменную isAdmin в модель
         return "contacts"; // Возвращает страницу логина
     }
 }

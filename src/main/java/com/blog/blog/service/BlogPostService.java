@@ -46,4 +46,8 @@ public class BlogPostService {
     public void deletePostById(Long id) {
         blogPostRepository.deleteById(id); // Удаление поста по ID
     }
+
+    public List<BlogPost> getPostsByUserId(Long userId) {
+        return blogPostRepository.findByAuthorId(userId);
+    }
 }

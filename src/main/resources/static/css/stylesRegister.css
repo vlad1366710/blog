@@ -1,53 +1,62 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f4f4f4; /* Светлый фон */
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    color: #333;
 }
 
 h1 {
-    color: #333;
     margin-bottom: 20px;
+    color: #007bff; /* Синий цвет заголовка */
 }
 
-form {
+.registration-container {
     background: white;
-    padding: 20px;
-    border-radius: 5px;
+    padding: 30px; /* Увеличение внутреннего отступа */
+    border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 300px;
+    text-align: center;
+    border: 1px solid #007bff; /* Синяя рамка вокруг блока */
 }
 
 input[type="text"],
 input[type="password"] {
-    width: 100%;
+    width: calc(100% - 22px); /* Учитываем отступы */
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #007bff; /* Синий цвет границы при фокусе */
+    outline: none;
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #007bff; /* Синий цвет кнопки */
     color: white;
     padding: 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s;
     width: 100%;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #0056b3; /* Темно-синий цвет кнопки при наведении */
 }
 
 .error {
     color: red;
     margin-top: 10px;
-    font-size: 14px;
 }

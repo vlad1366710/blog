@@ -19,15 +19,14 @@
     <main>
         <ul>
             <li th:each="post : ${posts}">
-                <a th:href="@{/posts/{id}(id=${post.id})}" class="post-item"> <!-- Обернули весь блок в <a> -->
+                <a th:href="@{/posts/{id}(id=${post.id})}" class="post-item">
                     <div class="post-item-content">
-                        <h2 th:text="${post.title}"></h2> <!-- Заголовок поста -->
+                        <h2 th:text="${post.title}"></h2>
                         <p class="post-author">Автор: <strong th:text="${post.author.username}">Имя автора</strong></p>
                     </div>
                 </a>
             </li>
         </ul>
-
 
         <div class="pagination">
             <span th:if="${currentPage > 0}">
@@ -58,13 +57,15 @@
             <p>
                 <a th:href="@{/account-settings}" class="settings-button">Настройки аккаунта</a>
             </p>
+            <p>
+                <a th:href="@{/user-posts/{id}(id=${currentUser.id})}" class="edit-posts-button">Редактировать посты</a> <!-- Кнопка редактирования постов -->
+            </p>
             <form action="#" th:action="@{/logout}" method="post" style="display:inline;">
                 <button type="submit" class="logout-button">Выйти</button>
             </form>
         </div>
 
-
-        <div class="account-info" th:if="${currentUser   == null}">
+        <div class="account-info" th:if="${currentUser  == null}">
             <h2>Аккаунт</h2>
             <p>Вы не авторизованы.</p>
             <p><a th:href="@{/login}">Войти</a> или <a th:href="@{/register}">Зарегистрироваться</a></p>

@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Controller
-public class AccountSettings {
+public class AccountController {
 
     @Autowired
     private UserService userService;
@@ -77,7 +77,7 @@ public class AccountSettings {
             redirectAttributes.addFlashAttribute("successMessage", "Настройки успешно обновлены.");
             
             // Перенаправляем на страницу настроек аккаунта
-            return "redirect:/account-settings"; // Укажите правильный путь к странице настроек
+            return "redirect:/login"; // Укажите правильный путь к странице настроек
         } catch (IllegalArgumentException e) {
             // Обработка ошибок (например, если пользователь не найден)
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

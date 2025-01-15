@@ -5,53 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Управление постами - Панель Администратора</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    /* Общие стили */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-    }
-
-    /* Стили для навигации */
-    .navbar {
-      background-color: #007bff;
-      padding: 10px 0;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-      font-weight: bold;
-    }
-    .navbar a:hover {
-      background-color: #0056b3;
-    }
-
-    /* Стили для кнопок */
-    .btn {
-      margin-right: 5px;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/stylesPosts.css"> <!-- Подключение CSS файла -->
 </head>
 <body>
-<nav class="navbar">
-  <a href="/admin/users">Управление пользователями</a>
-  <a href="/admin/posts" class="active">Управление постами</a>
-</nav>
+<div class="container">
+  <div class="navbar">
+    <a href="/admin">Управление пользователями</a>
+    <a href="/posts">Управление постами</a>
+  </div>
 
 <div class="container">
   <h1>Все посты</h1>
@@ -80,6 +41,8 @@
       </tbody>
     </table>
   </div>
+
+  <a href="/blog-center" class="logout-button">Выход</a> <!-- Кнопка выхода внизу -->
 </div>
 </body>
 </html>

@@ -1,10 +1,13 @@
 package com.blog.blog.service;
 
+import com.blog.blog.model.BlogPost;
 import com.blog.blog.model.User;
 import com.blog.blog.repository.BlogPostRepository;
 import com.blog.blog.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +103,4 @@ public class UserService {
         // Удаляем пользователя
         userRepository.deleteById(id);
     }
-
 }
