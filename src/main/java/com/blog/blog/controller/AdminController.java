@@ -3,11 +3,13 @@ package com.blog.blog.controller;
 import com.blog.blog.model.User;
 import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -47,7 +49,13 @@ public class AdminController {
     }
 
 
+    @GetMapping("/admin/users/{id}/delete")
+    public String deleteUser (@PathVariable Long id) {
 
+            userService.deleteUser (id);
+            return "adminPanel"; // Возвращаем статус 204 No Content
+
+    }
 }
 
 

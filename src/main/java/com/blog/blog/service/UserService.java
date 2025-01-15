@@ -1,7 +1,9 @@
 package com.blog.blog.service;
 
 import com.blog.blog.model.User;
+import com.blog.blog.repository.BlogPostRepository;
 import com.blog.blog.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    BlogPostRepository blogPostRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -80,6 +85,20 @@ public class UserService {
     public boolean isAdmin(String currentUsername) {
         User currentUser  = getUserInfo(currentUsername); // Получаем информацию о текущем пользователе
         return currentUser  != null && currentUser .isAdmin(); // Проверяем, что пользователь не null и является администратором
+    }
+
+    @Transactional
+    public void deleteUser (Long id) {
+        // Проверяем, существует ли пользователь
+        if (!userRepository.existsById(id)) {
+            throw new IllegalArgumentException("Пользователь не найден.");
+        }
+
+        // Удаляем все посты пользователя
+        blogPostRepository.deleteByAuthorId(id); // Убедитесь, что этот метод правильно реализован
+
+        // Удаляем пользователя
+        userRepository.deleteById(id);
     }
 
 }
