@@ -8,19 +8,30 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 public class ContactsController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+    private final AccountService accountService;
 
     @Autowired
-    private AccountService accountService;
+    public ContactsController(UserService userService, AccountService accountService) {
+        this.userService = userService;
+        this.accountService = accountService;
+    }
 
 
     @GetMapping("/contacts")
-    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+    public String showContacts(@RequestParam(value = "error", required = false) String error, Model model) {
         model.addAttribute("currentUser", userService.getUserInfo(accountService.getUserName()));
-        model.addAttribute("isAdmin", userService.isAdmin(accountService.getUserName())); // Добавляем переменную isAdmin в модель
-        return "contacts"; // Возвращает страницу логина
+        model.addAttribute("isAdmin", userService.isAdmin(accountService.getUserName()));
+
+
+        if (error != null) {
+            model.addAttribute("errorMessage", "Ошибка при входе. Пожалуйста, проверьте свои учетные данные.");
+        }
+
+        return "contacts";
     }
 }

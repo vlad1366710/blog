@@ -3,28 +3,30 @@ package com.blog.blog.controller;
 import com.blog.blog.model.User;
 import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+        if (error != null) {
+            model.addAttribute("error", "Неверные учетные данные.");
+        }
         return "login"; // Возвращает страницу логина
     }
-
-
-
 
     @PostMapping("/login")
     public String login(@RequestParam("username") String userLogin,
@@ -35,17 +37,17 @@ public class AuthController {
 
         if (user == null) {
             model.addAttribute("error", "Пользователь не найден");
-            return "login"; // Возвращаем на страницу логина с ошибкой
+            return "login";
         }
 
-        // Проверяем пароль (здесь вы можете использовать более безопасный способ проверки пароля)
+
         if (!user.getPassword().equals(password)) {
             model.addAttribute("error", "Неверный пароль");
             return "login"; // Возвращаем на страницу логина с ошибкой
         }
 
-        // Если пользователь найден и пароль верный, перенаправляем на страницу постов
-        return "posts"; // Или любой другой путь
+
+        return "redirect:/posts"; // Перенаправление на страницу постов
     }
 
     @GetMapping("/register")
@@ -57,16 +59,17 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser (@ModelAttribute User user, Model model) {
         try {
-
-            user.setAvatarUrl("/image/i.webp");// Устанавливаем новое значение поля
+            user.setAvatarUrl("/image/i.webp");
             user.setRole("Пользователь");
             user.setActive(true);
             userService.registerUser (user);
-            return "blog-center"; // перенаправление на страницу успеха
+            return "redirect:/blog-center";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
-            return "register"; // возвращаемся на страницу регистрации с ошибкой
+            return "register"; // Возвращаемся на страницу регистрации с ошибкой
+        } catch (Exception e) {
+            model.addAttribute("error", "Ошибка регистрации. Попробуйте еще раз.");
+            return "register"; // Возвращаемся на страницу регистрации с ошибкой
         }
     }
-
 }

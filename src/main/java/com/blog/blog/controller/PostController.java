@@ -11,23 +11,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.security.Principal;
 import java.util.List;
 
+
 @Controller
-public class postController {
+public class PostController {
+
+    private final BlogPostService blogPostService;
 
     @Autowired
-    private BlogPostService blogPostService;
+    public PostController(BlogPostService blogPostService) {
+        this.blogPostService = blogPostService;
+    }
 
 
     @GetMapping("/user-posts/{userId}")
     public String getUserPosts(@PathVariable Long userId, Model model, Principal principal) {
-        // Получаем посты пользователя по его ID
+
         List<BlogPost> userPosts = blogPostService.getPostsByUserId(userId);
 
-        // Добавляем посты в модель
         model.addAttribute("posts", userPosts);
 
-        // Возвращаем имя шаблона для отображения постов
-        return "posts"; // Имя шаблона, который будет отображать посты пользователя
+        return "posts";
     }
-
 }

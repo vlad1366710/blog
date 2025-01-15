@@ -13,14 +13,19 @@ import java.util.List;
 @RequestMapping("/posts/{postId}/comments")
 public class CommentController {
 
+    private final CommentService commentService;
+
     @Autowired
-    private CommentService commentService;
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
 
     @GetMapping
     public String getAllComments(@PathVariable Long postId, Model model) {
         List<Comment> comments = commentService.getCommentsByPostId(postId);
         model.addAttribute("comments", comments);
-        return "comments"; // Имя вашего HTML-шаблона для отображения комментариев
+        return "comments";
     }
 
     @PostMapping
@@ -28,12 +33,12 @@ public class CommentController {
         Comment comment = new Comment();
         comment.setContent(content);
 
-        // Сохраняем комментарий
+
         commentService.addCommentToPost(postId, comment);
 
-        // Перенаправляем на страницу поста после добавления комментария
-        return "redirect:/posts/" + postId; // Замените на свой маршрут для отображения поста
+
+        return "redirect:/posts/" + postId;
     }
 
-    // Другие методы для работы с комментариями
+
 }

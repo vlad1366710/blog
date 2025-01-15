@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
 
-import java.time.LocalDateTime; // Импортируйте LocalDateTime
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -15,22 +15,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String userLogin; // Новое поле для логина
+    private String userLogin;
     private String username;
     private String password;
 
-    private boolean isAdmin; // Поле для проверки прав администратора
-    private boolean isActive; // Поле для проверки активности пользователя
-    private String avatarUrl; // Поле для URL аватара
-    private String email; // Поле для хранения email
-    private String role; // Поле для хранения роли пользователя
+    private boolean isAdmin;
+    private boolean isActive;
+    private String avatarUrl;
+    private String email;
+    private String role;
 
-    private LocalDateTime lastLogin; // Поле для хранения времени последнего входа
+    private LocalDateTime lastLogin;
 
     @OneToMany(mappedBy = "user")
     private Set<Comment> comments;
 
-    // Геттеры и сеттеры
+
     public Long getId() {
         return id;
     }

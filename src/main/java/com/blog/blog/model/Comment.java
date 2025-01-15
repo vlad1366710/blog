@@ -11,14 +11,14 @@ public class Comment {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // Добавляем связь с User
-    private User user; // Это поле должно быть здесь
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "blog_post_id", nullable = false)
-    private BlogPost blogPost; // Убедитесь, что это поле соответствует вашему BlogPost
+    private BlogPost blogPost;
 
-    // Геттеры и сеттеры
+
     public Long getId() {
         return id;
     }
@@ -36,7 +36,7 @@ public class Comment {
     }
 
     public User getUser () {
-        return user; // Добавляем геттер для user
+        return user;
     }
 
     public void setUser (User user) {

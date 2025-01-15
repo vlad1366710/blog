@@ -12,14 +12,13 @@ public class BlogPost {
     private String title;
     private String content;
 
-    @ManyToOne // Указываем, что это связь "многие к одному"
-    @JoinColumn(name = "author_id") // Указываем имя колонки в базе данных
-    private User author; // Измените тип на объект CustomUser , если это необходимо
-
-    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Исправлено на blogPost
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Comment> comments;
 
-    // Геттеры и сеттеры
+
     public Long getId() {
         return id;
     }
@@ -44,19 +43,19 @@ public class BlogPost {
         this.content = content;
     }
 
-    public User getAuthor() { // Измените тип возвращаемого значения на CustomUser , если это необходимо
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) { // Измените тип аргумента на CustomUser , если это необходимо
+    public void setAuthor(User author) {
         this.author = author;
     }
 
-    public Set<Comment> getComments() { // Добавляем геттер для comments
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) { // Добавляем сеттер для comments
+    public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
 }

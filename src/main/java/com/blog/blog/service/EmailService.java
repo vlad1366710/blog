@@ -17,7 +17,7 @@ public class EmailService {
 
     public void sendEmail(String name, String email, String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo("vladmuz369@gmail.com"); // Замените на свой рабочий email
+        mailMessage.setTo("vladmuz369@gmail.com");
         mailMessage.setSubject("Новое сообщение от " + name);
         mailMessage.setText("Сообщение от: " + name + "\nEmail: " + email + "\n\nСообщение:\n" + message);
 

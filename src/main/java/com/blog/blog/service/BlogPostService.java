@@ -31,20 +31,19 @@ public class BlogPostService {
 
     public BlogPost getPostById(Long id) {
         Optional<BlogPost> post = blogPostRepository.findById(id);
-        return post.orElse(null); // Возвращаем пост или null, если не найден
+        return post.orElse(null);
     }
 
     public Page<BlogPost> searchPosts(String query, Pageable pageable) {
         return blogPostRepository.findByTitleContainingIgnoreCase(query, pageable);
     }
 
-    // Сохранение или обновление поста
     public BlogPost savePost(BlogPost post) {
-        return blogPostRepository.save(post); // Возвращаем сохраненный пост
+        return blogPostRepository.save(post);
     }
 
     public void deletePostById(Long id) {
-        blogPostRepository.deleteById(id); // Удаление поста по ID
+        blogPostRepository.deleteById(id);
     }
 
     public List<BlogPost> getPostsByUserId(Long userId) {

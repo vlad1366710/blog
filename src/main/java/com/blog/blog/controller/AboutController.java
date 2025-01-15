@@ -11,17 +11,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AboutController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final AccountService accountService;
 
     @Autowired
-    private AccountService accountService;
-
+    public AboutController(UserService userService, AccountService accountService) {
+        this.userService = userService;
+        this.accountService = accountService;
+    }
 
     @GetMapping("/aboutUs")
-    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
-        model.addAttribute("isAdmin", userService.isAdmin(accountService.getUserName())); // Добавляем переменную isAdmin в модель
-        model.addAttribute("currentUser", userService.getUserInfo(accountService.getUserName()));
-        return "aboutUs"; // Возвращает страницу логина
+    public String aboutUs(@RequestParam(value = "error", required = false) String error, Model model) {
+        String currentUserName = accountService.getUserName();
+
+        model.addAttribute("isAdmin", userService.isAdmin(currentUserName));
+        model.addAttribute("currentUser", userService.getUserInfo(currentUserName));
+
+        if (error != null) {
+            model.addAttribute("errorMessage", "An error occurred during login.");
+        }
+
+        return "aboutUs";
     }
 }

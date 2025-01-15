@@ -1,13 +1,10 @@
 package com.blog.blog.service;
 
-import com.blog.blog.model.BlogPost;
 import com.blog.blog.model.User;
 import com.blog.blog.repository.BlogPostRepository;
 import com.blog.blog.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,7 @@ public class UserService {
     private AccountService accountService;
 
     public void registerUser (User user) throws IllegalArgumentException {
-        validatePassword(user.getPassword()); // Проверка пароля
+        validatePassword(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -38,7 +35,6 @@ public class UserService {
         if (password.length() < 8) {
             throw new IllegalArgumentException("Пароль должен содержать минимум 8 символов.");
         }
-        // Добавьте дополнительные условия по мере необходимости
     }
 
     public User findByUserLogin(String Login) {
@@ -65,19 +61,17 @@ public class UserService {
             user.setUsername(newUsername);
         }
 
-        // Если новый пароль предоставлен, обновляем его
         if (newPassword != null && !newPassword.isEmpty()) {
-            validatePassword(newPassword); // Проверка нового пароля
+            validatePassword(newPassword);
             user.setPassword(passwordEncoder.encode(newPassword));
         }
 
-        // Обновляем информацию о пользователе в базе данных
         userRepository.save(user);
     }
 
 
     public void updateUser (User user) {
-        userRepository.save(user); // Сохраняем изменения в базе данных
+        userRepository.save(user);
     }
 
     public User getUserInfo(String currentUserLogin) {
@@ -86,21 +80,18 @@ public class UserService {
     }
 
     public boolean isAdmin(String currentUsername) {
-        User currentUser  = getUserInfo(currentUsername); // Получаем информацию о текущем пользователе
-        return currentUser  != null && currentUser .isAdmin(); // Проверяем, что пользователь не null и является администратором
+        User currentUser  = getUserInfo(currentUsername);
+        return currentUser  != null && currentUser .isAdmin();
     }
 
     @Transactional
     public void deleteUser (Long id) {
-        // Проверяем, существует ли пользователь
         if (!userRepository.existsById(id)) {
             throw new IllegalArgumentException("Пользователь не найден.");
         }
 
-        // Удаляем все посты пользователя
-        blogPostRepository.deleteByAuthorId(id); // Убедитесь, что этот метод правильно реализован
+        blogPostRepository.deleteByAuthorId(id);
 
-        // Удаляем пользователя
         userRepository.deleteById(id);
     }
 }

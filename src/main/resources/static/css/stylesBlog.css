@@ -139,3 +139,16 @@ a:hover {
     background-color: #0056b3; /* ÷вет дл€ активной страницы */
     font-weight: bold; /* ∆ирный текст дл€ активной страницы */
 }
+.logout-button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #007BFF; /* ÷вет фона */
+    color: white; /* ÷вет текста */
+    border-radius: 4px; /* —кругление углов */
+    cursor: pointer; /*  урсор при наведении */
+    transition: background-color 0.3s; /* ѕлавный переход дл€ фона */
+}
+
+.logout-button:hover {
+    background-color: #0056b3; /* ÷вет при наведении */
+}

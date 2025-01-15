@@ -18,41 +18,39 @@ import java.io.IOException;
 @Controller
 public class AccountController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final AccountService accountService;
 
     @Autowired
-    private AccountService accountService;
+    public AccountController(UserService userService, AccountService accountService) {
+        this.userService = userService;
+        this.accountService = accountService;
+    }
 
     @GetMapping("/account-settings")
-    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
-
-
-        model.addAttribute("currentUser",userService.getUserInfo(accountService.getUserName()));
-
-
-        return "account-settings"; // Возвращает страницу логина
+    public String accountSettings(@RequestParam(value = "error", required = false) String error, Model model) {
+        model.addAttribute("currentUser", userService.getUserInfo(accountService.getUserName()));
+        return "account-settings";
     }
 
     @PostMapping("/upload-avatar")
     public String uploadAvatar(@RequestParam("avatar") MultipartFile file, RedirectAttributes redirectAttributes) {
-        // Проверка, что файл не пустой
         String uploadDir = "C:\\Users\\user\\Desktop\\blog\\src\\main\\resources\\static\\image\\";
+
+
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Выберите файл для загрузки.");
-            return "redirect:/account-settings"; // Перенаправление на страницу настроек аккаунта
+            return "redirect:/account-settings";
         }
 
         try {
             String avatarPath = uploadDir + file.getOriginalFilename();
-            // Создаем файл на сервере
-            File uploadFile = new File(uploadDir + file.getOriginalFilename());
-            file.transferTo(uploadFile); // Сохраняем файл
-            User currentUser  = userService.getUserInfo(accountService.getUserName());
-            // Вы можете добавить логику для сохранения информации о пользователе или аватаре в базе данных
-            currentUser .setAvatarUrl("/image/" + file.getOriginalFilename()); // Устанавливаем новое значение поля
-            userService.updateUser(currentUser );
+            File uploadFile = new File(avatarPath);
+            file.transferTo(uploadFile);
 
+            User currentUser  = userService.getUserInfo(accountService.getUserName());
+            currentUser .setAvatarUrl("/image/" + file.getOriginalFilename());
+            userService.updateUser (currentUser );
 
             redirectAttributes.addFlashAttribute("message", "Аватар успешно загружен.");
         } catch (IOException e) {
@@ -60,9 +58,8 @@ public class AccountController {
             redirectAttributes.addFlashAttribute("message", "Ошибка загрузки файла. Попробуйте еще раз.");
         }
 
-        return "redirect:/account-settings"; // Перенаправление на страницу настроек аккаунта
+        return "redirect:/account-settings";
     }
-
 
     @PostMapping("/update-account")
     public String updateAccount(
@@ -70,26 +67,15 @@ public class AccountController {
             @RequestParam(value = "password", required = false) String password,
             RedirectAttributes redirectAttributes) {
         try {
-            // Обновляем информацию о пользователе
-            userService.updateUser (username, password); // Используем новый метод обновления
-            String name = accountService.getUserName();
-            // Добавляем сообщение об успешном обновлении
+            userService.updateUser (username, password);
             redirectAttributes.addFlashAttribute("successMessage", "Настройки успешно обновлены.");
-            
-            // Перенаправляем на страницу настроек аккаунта
-            return "redirect:/login"; // Укажите правильный путь к странице настроек
+            return "redirect:/login";
         } catch (IllegalArgumentException e) {
-            // Обработка ошибок (например, если пользователь не найден)
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/account-settings"; // Перенаправляем обратно на страницу настроек
+            return "redirect:/account-settings";
         } catch (Exception e) {
-            // Обработка других исключений
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении настроек. Попробуйте еще раз.");
-            return "redirect:/account-settings"; // Перенаправляем обратно на страницу настроек
+            return "redirect:/account-settings";
         }
     }
-
 }
-
-
-

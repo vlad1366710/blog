@@ -1,6 +1,5 @@
 package com.blog.blog.controller;
 
-
 import com.blog.blog.service.AccountService;
 import com.blog.blog.service.EmailService;
 import com.blog.blog.service.UserService;
@@ -15,18 +14,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ContactController {
 
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private UserService userService;
+    private final EmailService emailService;
+    private final UserService userService;
+    private final AccountService accountService;
 
     @Autowired
-    private AccountService accountService;
+    public ContactController(EmailService emailService, UserService userService, AccountService accountService) {
+        this.emailService = emailService;
+        this.userService = userService;
+        this.accountService = accountService;
+    }
+
 
     @RequestMapping("/contacts")
     public String showContactForm(Model model) {
-        return "contacts"; // Убедитесь, что у вас есть шаблон contacts.html
+        return "contacts";
     }
+
 
     @PostMapping("/send-message")
     public String sendMessage(@RequestParam("name") String name,
@@ -39,6 +43,6 @@ public class ContactController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при отправке сообщения. Попробуйте еще раз.");
         }
-        return "redirect:/contacts"; // Перенаправление обратно на страницу контактов
+        return "redirect:/contacts";
     }
 }

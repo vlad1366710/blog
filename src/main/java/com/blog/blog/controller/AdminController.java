@@ -3,7 +3,6 @@ package com.blog.blog.controller;
 import com.blog.blog.model.User;
 import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -11,52 +10,56 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
 public class AdminController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/admin")
     public String adminPanel(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // Проверяем, является ли пользователь администратором
-        if (authentication != null && authentication.isAuthenticated()) {
-            String currentUserLogin = authentication.getName();
-            User currentUser  = userService.findByUserLogin(currentUserLogin);
+        if (isUserAdmin(authentication)) {
+            List<User> users = userService.getUsers(page);
+            int totalUsers = userService.getTotalUsers();
+            int totalPages = (int) Math.ceil((double) totalUsers / UserService.USERS_PER_PAGE); // Получаем общее количество страниц
 
-            if (currentUser  != null && currentUser.isAdmin()) {
-                // Получаем пользователей из сервиса
-                List<User> users = userService.getUsers(page);
-                int totalUsers = userService.getTotalUsers();
-                int totalPages = (int) Math.ceil((double) totalUsers / UserService.USERS_PER_PAGE); // Предположим, что у вас есть константа для количества пользователей на странице
+            model.addAttribute("users", users);
+            model.addAttribute("page", page);
+            model.addAttribute("totalPages", totalPages);
 
-                model.addAttribute("users", users);
-                model.addAttribute("page", page);
-                model.addAttribute("total_pages", totalPages);
-
-                return "adminPanel"; // Возвращает страницу администрирования
-            }
+            return "adminPanel";
         }
 
         // Если пользователь не администратор, добавляем сообщение об ошибке
         model.addAttribute("error", "У вас нет прав доступа к этой панели.");
-        return "error"; // Возвращает страницу с ошибкой
+        return "error";
     }
-
 
     @GetMapping("/admin/users/{id}/delete")
-    public String deleteUser (@PathVariable Long id) {
-
+    public String deleteUser (@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
             userService.deleteUser (id);
-            return "adminPanel"; // Возвращаем статус 204 No Content
+            redirectAttributes.addFlashAttribute("successMessage", "Пользователь успешно удален.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при удалении пользователя. Попробуйте еще раз.");
+        }
 
+        return "redirect:/admin"; // Перенаправляем обратно на панель администратора
+    }
+
+    private boolean isUserAdmin(Authentication authentication) {
+        return authentication != null && authentication.isAuthenticated() &&
+                userService.findByUserLogin(authentication.getName()).isAdmin();
     }
 }
-
-
-

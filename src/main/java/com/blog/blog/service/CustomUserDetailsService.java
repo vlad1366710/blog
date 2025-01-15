@@ -23,7 +23,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User  not found: " + userLogin);
         }
-        // Возвращаем объект UserDetails, который будет использоваться для аутентификации
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Collections.emptyList());
     }
 }
