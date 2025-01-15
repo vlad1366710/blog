@@ -1,9 +1,11 @@
 package com.blog.blog.controller;
 
 import com.blog.blog.model.BlogPost;
+import com.blog.blog.model.Comment;
 import com.blog.blog.model.User;
 import com.blog.blog.service.AccountService;
 import com.blog.blog.service.BlogPostService;
+import com.blog.blog.service.CommentService;
 import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,8 @@ public class BlogController {
 
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/posts")
     public String getAllPosts(Model model) {
@@ -61,7 +65,10 @@ public class BlogController {
     }
 
     @GetMapping("/posts/{id}")
-    public String viewPost(@PathVariable Long id, Model model) {
+    public String viewPost(@PathVariable Long id,
+                           @RequestParam(defaultValue = "0") int page,
+                           @RequestParam(defaultValue = "5") int size,
+                           Model model) {
         // Получаем пост по его идентификатору
         BlogPost post = blogPostService.getPostById(id);
 
@@ -70,19 +77,26 @@ public class BlogController {
             return "redirect:/posts"; // или можно вернуть "404" страницу
         }
 
-        // Добавляем пост в модель, чтобы он был доступен в шаблоне
+        // Получаем комментарии с пагинацией
+        Page<Comment> commentsPage = commentService.findCommentsByPostId(id,  PageRequest.of(page, size));
+
+        // Добавляем пост и комментарии в модель, чтобы они были доступны в шаблоне
         model.addAttribute("post", post);
+        model.addAttribute("comments", commentsPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", commentsPage.getTotalPages());
 
         // Возвращаем имя шаблона для отображения поста
         return "viewPost"; // Убедитесь, что у вас есть шаблон viewPost.html
     }
+
 
     @GetMapping("/blog-center")
     public String blogCenter(@RequestParam(defaultValue = "") String query,
                              @RequestParam(defaultValue = "0") int page,
                              Model model) {
         // Создаем объект Pageable для пагинации
-        Pageable pageable = PageRequest.of(page, 10); // 10 постов на странице
+        Pageable pageable = PageRequest.of(page, 5); // 10 постов на странице
 
         Page<BlogPost> postsPage;
 

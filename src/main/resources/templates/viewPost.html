@@ -4,37 +4,12 @@
   <meta charset="UTF-8">
   <title th:text="${post.title}">Пост</title>
   <link rel="stylesheet" href="/css/styleViewPost.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('#commentForm').on('submit', function(event) {
-        event.preventDefault(); // Предотвращаем стандартное поведение формы
-
-        var formData = $(this).serialize(); // Собираем данные формы
-
-        $.ajax({
-          type: 'POST',
-          url: $(this).attr('action'), // URL из атрибута action формы
-          data: formData,
-          success: function(comment) {
-            // Добавляем новый комментарий в список
-            var newComment = '<div class="comment"><p><strong>Вы</strong>: <span>' + comment.content + '</span></p></div>';
-            $('.comments-list').append(newComment); // Добавляем комментарий в список
-            $('#commentContent').val(''); // Очищаем поле ввода
-          },
-          error: function(xhr, status, error) {
-            console.error('Ошибка при отправке комментария:', error);
-          }
-        });
-      });
-    });
-  </script>
 </head>
 <body>
 <div class="container">
   <h1 th:text="${post.title}"></h1>
   <p>Автор: <span th:text="${post.author.username}"></span></p>
-  <div th:text="${post.content}"></div> <!-- Предположим, что у вас есть поле content -->
+  <div class="post-content" th:text="${post.content}"></div> <!-- Предположим, что у вас есть поле content -->
   <a th:href="@{/posts}" class="btn btn-secondary">Назад к списку постов</a>
 
   <hr>
@@ -43,11 +18,27 @@
 
   <!-- Список комментариев -->
   <div class="comments-list">
-    <div th:each="comment : ${post.comments}">
+    <div th:each="comment : ${comments}">
       <div class="comment">
         <p><strong th:text="${comment.user.username}"></strong>: <span th:text="${comment.content}"></span></p>
       </div>
     </div>
+  </div>
+
+  <!-- Пагинация -->
+  <div class="pagination">
+    <ul class="pagination">
+      <li th:class="${currentPage == 0} ? 'disabled'">
+        <a th:href="@{/posts/{id}(id=${post.id}, page=${currentPage - 1}, size=${size})}">Предыдущая</a>
+      </li>
+      <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+          th:class="${i == currentPage} ? 'active'">
+        <a th:href="@{/posts/{id}(id=${post.id}, page=${i}, size=${size})}" th:text="${i + 1}"></a>
+      </li>
+      <li th:class="${currentPage == totalPages - 1} ? 'disabled'">
+        <a th:href="@{/posts/{id}(id=${post.id}, page=${currentPage + 1}, size=${size})}">Следующая</a>
+      </li>
+    </ul>
   </div>
 
   <h3>Оставить комментарий</h3>

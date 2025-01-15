@@ -6,10 +6,12 @@ import com.blog.blog.model.User;
 import com.blog.blog.repository.CommentRepository;
 import com.blog.blog.repository.BlogPostRepository; // Импортируйте репозиторий для постов
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
@@ -52,6 +54,11 @@ public class CommentService {
         }
         return commentRepository.save(comment);
     }
+
+    public Page<Comment> findCommentsByPostId(Long postId, Pageable pageable) {
+        return (Page<Comment>) commentRepository.findByBlogPostId(postId,  pageable);
+    }
+
 
     // Другие методы для работы с комментариями
 }
