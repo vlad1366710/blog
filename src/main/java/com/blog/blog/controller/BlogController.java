@@ -119,6 +119,25 @@ public class BlogController {
     }
 
 
-// /posts/edit/1
-    // http://localhost:8080/posts/1
+    // Метод для отображения формы редактирования поста
+    @GetMapping("/posts/edit/{id}")
+    public String editPost(@PathVariable("id") Long id, Model model) {
+        BlogPost post = blogPostService.getPostById(id);
+        model.addAttribute("post", post);
+        return "editPost"; // Возвращаем имя HTML-шаблона для редактирования поста
+    }
+
+    // Метод для обработки обновления поста
+    @PostMapping("/posts/edit")
+    public String updatePost(@ModelAttribute("post") BlogPost post) {
+        post.setAuthor(userService.getUserInfo(accountService.getUserName()));
+        blogPostService.savePost(post); // Сохраняем обновленный пост
+        return "redirect:/posts"; // Перенаправляем на страницу со всеми постами
+    }
+
+    @PostMapping("/posts/delet/{id}")
+    public String deletePost(@PathVariable("id") Long id) {
+        blogPostService.deletePostById(id); // Метод для удаления поста
+        return "redirect:/posts"; // Перенаправление на страницу со списком постов
+    }
 }

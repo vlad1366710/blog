@@ -10,7 +10,7 @@
   <h1 th:text="${post.title}"></h1>
   <p>Автор: <span th:text="${post.author.username}"></span></p>
   <div class="post-content" th:text="${post.content}"></div> <!-- Предположим, что у вас есть поле content -->
-  <a th:href="@{/posts}" class="btn btn-secondary">Назад к списку постов</a>
+  <a th:href="@{/blog-center}" class="btn btn-secondary">Назад к списку постов</a>
 
   <hr>
 

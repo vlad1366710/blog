@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование поста</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Редактирование поста</h1>
+    <form th:action="@{/posts/edit}" th:object="${post}" method="post">
+        <div class="form-group">
+            <label for="title">Заголовок</label>
+            <input type="text" id="title" th:field="*{title}" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="content">Содержание</label>
+            <textarea id="content" th:field="*{content}" class="form-control" rows="5" required></textarea>
+        </div>
+        <input type="hidden" th:field="*{id}"/> <!-- Скрытое поле для ID поста -->
+        <button type="submit" class="btn btn-success">Сохранить изменения</button>
+        <a href="/posts" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

@@ -60,6 +60,7 @@ public class AuthController {
 
             user.setAvatarUrl("/image/i.webp");// Устанавливаем новое значение поля
             user.setRole("Пользователь");
+            user.setActive(true);
             userService.registerUser (user);
             return "blog-center"; // перенаправление на страницу успеха
         } catch (IllegalArgumentException e) {

@@ -37,4 +37,13 @@ public class BlogPostService {
     public Page<BlogPost> searchPosts(String query, Pageable pageable) {
         return blogPostRepository.findByTitleContainingIgnoreCase(query, pageable);
     }
+
+    // Сохранение или обновление поста
+    public BlogPost savePost(BlogPost post) {
+        return blogPostRepository.save(post); // Возвращаем сохраненный пост
+    }
+
+    public void deletePostById(Long id) {
+        blogPostRepository.deleteById(id); // Удаление поста по ID
+    }
 }

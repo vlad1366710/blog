@@ -6,6 +6,92 @@
   <title>Управление пользователями - Панель Администратора</title>
   <link rel="stylesheet" type="text/css" href="/css/stylesAdmin.css"> <!-- Подключение CSS файла -->
   <style>
+    /* Общие стили */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    /* Стили для навигации */
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      background-color: #007bff;
+      padding: 10px 0;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+    .navbar a:hover {
+      background-color: #0056b3;
+    }
+
+    /* Заголовки */
+    h1, h2 {
+      color: #333;
+    }
+
+    /* Стили для формы поиска */
+    section form {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    section form input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+    section form button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    section form button:hover {
+      background-color: #218838;
+    }
+
+    /* Стили для таблицы */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
     /* Стили для аватаров */
     .avatar {
       width: 40px; /* Ширина аватара */
@@ -17,6 +103,28 @@
       margin-left: 10px;
       font-weight: bold;
     }
+
+    /* Стили для пагинации */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .pagination a {
+      margin: 0 5px;
+      padding: 8px 12px;
+      border: 1px solid #007bff;
+      color: #007bff;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .pagination a:hover {
+      background-color: #007bff;
+      color: white;
+    }
+
+    /* Стили для модального окна */
     .modal {
       display: none; /* Скрыто по умолчанию */
       position: fixed;
@@ -26,8 +134,7 @@
       width: 100%; /* Полная ширина */
       height: 100%; /* Полная высота */
       overflow: auto; /* Включить прокрутку при необходимости */
-      background-color: rgb(0,0,0); /* Черный фон с прозрачностью */
-      background-color: rgba(0,0,0,0.4); /* Черный фон с прозрачностью */
+      background-color: rgba(0, 0, 0, 0.4); /* Черный фон с прозрачностью */
     }
     .modal-content {
       background-color: #fefefe;
@@ -35,11 +142,31 @@
       padding: 20px;
       border: 1px solid #888;
       width: 80%; /* Ширина */
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 <div class="container">
+  <!-- Навигационная панель -->
+  <div class="navbar">
+    <a href="/admin/users">Управление пользователями</a>
+    <a href="/posts">Управление постами</a>
+  </div>
+
   <h1>Управление пользователями</h1>
 
   <section>
@@ -71,7 +198,7 @@
         </td>
         <td>
           <span th:text="${user.username}"></span>
-          <span class="status" th:class="${user.isActive} ? 'active' : 'blocked'" th:text="${user.isActive} ? 'Активен' : 'Заблокирован'"></span>
+
         </td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.role}"></td>
@@ -130,14 +257,18 @@
 
   let actionUrl = ""; // URL для подтвержденного действия
 
-  function showModal(message, url) {
+  function showModal(element) {
     modal.style.display = "block";
-    document.getElementById("modalMessage").innerText = message;
-    actionUrl = url; // Сохранить URL действия
+    const username = element.getAttribute('data-username');
+    const actionType = element.textContent.includes('Удалить') ? 'удаления' : 'блокировки';
+    document.getElementById("modalMessage").innerText = `Вы уверены, что хотите ${actionType} пользователя ${username}?`;
+    actionUrl = element.getAttribute('data-id'); // Сохранить ID действия
   }
 
   confirmButton.onclick = function() {
-    window.location.href = actionUrl; // Перейти по URL действия
+    // Здесь можно добавить логику для выполнения действия по actionUrl
+    console.log(`Действие подтверждено для ID: ${actionUrl}`);
+    modal.style.display = "none"; // Закрыть модальное окно
   }
 
   closeModal.onclick = function() {
