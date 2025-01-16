@@ -8,6 +8,7 @@
 <body>
 <div class="text">
     <h1>Блоговый Центр</h1>
+    <a href="/add-blog" class="add-blog-button">Добавить блог</a>
 </div>
 <div class="search-bar">
     <form action="#" th:action="@{/blog-center}" method="get">
@@ -43,7 +44,7 @@
     </main>
 
     <div class="sidebar">
-        <div class="account-info" th:if="${currentUser  != null}">
+        <div class="account-info" th:if="${currentUser   != null}">
             <h2>Аккаунт</h2>
             <div class="account-details">
                 <div class="account-circle">
@@ -58,7 +59,7 @@
                 <a th:href="@{/account-settings}" class="settings-button">Настройки аккаунта</a>
             </p>
             <p>
-                <a th:href="@{/user-posts/{id}(id=${currentUser.id})}" class="edit-posts-button">Редактировать посты</a> <!-- Кнопка редактирования постов -->
+                <a th:href="@{/user-posts/{id}(id=${currentUser .id})}" class="edit-posts-button">Редактировать посты</a>
             </p>
             <form action="#" th:action="@{/logout}" method="post" style="display:inline;">
                 <button type="submit" class="logout-button">Выйти</button>

@@ -6,14 +6,14 @@ body {
 }
 
 .text {
-    text-align: center; /* Центрируем заголовок */
-    margin-bottom: 20px; /* Отступ снизу для разделения с контентом */
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .container {
-    display: flex; /* Используем flexbox для размещения контента */
-    justify-content: center; /* Центрируем содержимое */
-    margin-top: 20px; /* Отступ сверху для разделения с заголовком */
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .account-settings {
@@ -22,26 +22,26 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 600px; /* Максимальная ширина для формы */
+    max-width: 600px;
 }
 
 h2 {
-    margin-top: 20px; /* Отступ сверху для заголовков форм */
+    margin-top: 20px;
 }
 
 .form-group {
-    margin-bottom: 15px; /* Отступ между группами полей */
+    margin-bottom: 15px;
 }
 
 label {
-    display: block; /* Отображаем метки как блочные элементы */
-    margin-bottom: 5px; /* Отступ снизу для меток */
+    display: block;
+    margin-bottom: 5px;
 }
 
 input[type="text"],
 input[type="password"],
 input[type="file"] {
-    width: calc(100% - 20px); /* Ширина с учетом отступов */
+    width: calc(100% - 20px);
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -54,11 +54,11 @@ button {
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px; /* Отступ сверху для кнопок */
+    margin-top: 10px;
 }
 
 button:hover {
-    background-color: #0056b3; /* Цвет при наведении */
+    background-color: #0056b3;
 }
 
 a {
@@ -67,10 +67,10 @@ a {
 }
 
 a:hover {
-    text-decoration: underline; /* Подчеркивание при наведении */
+    text-decoration: underline;
 }
 
-/* Стили для сообщений об ошибках */
+
 .error-message {
     color: red;
     margin-top: 10px;

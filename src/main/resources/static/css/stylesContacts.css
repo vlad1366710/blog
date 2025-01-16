@@ -6,24 +6,24 @@ body {
 }
 
 .text {
-    text-align: center; /* Центрируем заголовок */
+    text-align: center;
 }
 
 .container {
-    display: flex; /* Используем flexbox для размещения контента и боковой панели */
-    flex: 1; /* Позволяем контейнеру занимать доступное пространство */
-    margin-top: 20px; /* Отступ сверху для разделения с заголовком */
+    display: flex;
+    flex: 1;
+    margin-top: 20px;
 }
 
 main {
-    flex: 3; /* Основное содержимое занимает больше места */
+    flex: 3;
 }
 
 .sidebar {
-    width: 250px; /* Ширина боковой панели */
-    margin-left: 20px; /* Отступ слева для разделения */
-    display: flex; /* Используем flexbox для вертикального размещения */
-    flex-direction: column; /* Вертикальное размещение элементов */
+    width: 250px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .account-info {
@@ -35,41 +35,41 @@ main {
 }
 
 .account-details {
-    display: flex; /* Используем flexbox для расположения изображения и текста */
-    align-items: center; /* Центрируем элементы по вертикали */
+    display: flex;
+    align-items: center;
 }
 
 .account-circle {
-    margin-bottom: 10px; /* Отступ снизу для разделения с текстом */
+    margin-bottom: 10px;
 }
 
 .account-text {
     display: flex;
-    flex-direction: column; /* Вертикальное расположение текста */
+    flex-direction: column;
 }
 
 .profile-image {
-    width: 50px; /* Ширина изображения */
-    height: 50px; /* Высота изображения */
-    border-radius: 50%; /* Округление для создания круга */
-    border: 2px solid #007BFF; /* Обводка */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #007BFF;
 }
 
 .search-bar {
     display: flex;
-    justify-content: center; /* Центрируем строку поиска */
-    margin-bottom: 20px; /* Отступ снизу для разделения с основным контентом */
-    width: 100%; /* Задаем ширину на 100% */
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
 .search-bar form {
-    width: 100%; /* Задаем ширину формы на 100% */
-    max-width: 800px; /* Ограничиваем максимальную ширину формы */
-    display: flex; /* Используем flexbox для расположения элементов внутри формы */
+    width: 100%;
+    max-width: 800px;
+    display: flex;
 }
 
 .search-bar input {
-    flex: 1; /* Полное использование пространства */
+    flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -119,14 +119,14 @@ a:hover {
 
 .pagination {
     display: flex;
-    justify-content: center; /* Центрируем пагинацию */
-    margin: 20px 0; /* Отступы сверху и снизу */
+    justify-content: center;
+    margin: 20px 0;
 }
 
 .pagination-link {
     display: inline-block;
     padding: 10px 15px;
-    margin: 0 5px; /* Отступ между ссылками */
+    margin: 0 5px;
     background-color: #007BFF;
     color: white;
     border-radius: 5px;
@@ -135,15 +135,15 @@ a:hover {
 }
 
 .pagination-link:hover {
-    background-color: #0056b3; /* Цвет при наведении */
+    background-color: #0056b3;
 }
 
 .pagination-link.active {
-    background-color: #0056b3; /* Цвет для активной страницы */
-    font-weight: bold; /* Жирный текст для активной страницы */
+    background-color: #0056b3;
+    font-weight: bold;
 }
 
-/* Стили для формы обратной связи */
+
 form {
     background: #fff;
     padding: 20px;
@@ -160,7 +160,7 @@ label {
 input[type="text"],
 input[type="email"],
 textarea {
-    width: calc(100% - 20px); /* Ширина с учетом отступов */
+    width: calc(100% - 20px);
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -176,5 +176,5 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3; /* Цвет при наведении */
+    background-color: #0056b3;
 }

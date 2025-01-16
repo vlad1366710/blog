@@ -3,6 +3,7 @@ package com.blog.blog.controller;
 import com.blog.blog.model.BlogPost;
 import com.blog.blog.model.Comment;
 import com.blog.blog.model.User;
+import com.blog.blog.repository.BlogPostRepository;
 import com.blog.blog.service.AccountService;
 import com.blog.blog.service.BlogPostService;
 import com.blog.blog.service.CommentService;
@@ -24,14 +25,16 @@ public class BlogController {
     private final UserService userService;
     private final AccountService accountService;
     private final CommentService commentService;
+    private final BlogPostRepository blogPostRepository;
 
     @Autowired
     public BlogController(BlogPostService blogPostService, UserService userService,
-                          AccountService accountService, CommentService commentService) {
+                          AccountService accountService, CommentService commentService, BlogPostRepository blogPostRepository) {
         this.blogPostService = blogPostService;
         this.userService = userService;
         this.accountService = accountService;
         this.commentService = commentService;
+        this.blogPostRepository = blogPostRepository;
     }
 
     @GetMapping("/posts")
@@ -120,5 +123,19 @@ public class BlogController {
     public String deletePost(@PathVariable("id") Long id) {
         blogPostService.deletePostById(id);
         return "redirect:/posts";
+    }
+
+    @GetMapping("/add-blog")
+    public String showAddBlogForm(Model model) {
+        model.addAttribute("blogPost", new BlogPost());
+        return "add-blog";
+    }
+
+    @PostMapping("/submit-blog")
+    public String submitBlog(@ModelAttribute BlogPost blogPost, Model model) {
+        blogPost.setAuthor(userService.getUserInfo(accountService.getUserName()));
+        blogPostRepository.save(blogPost);
+        model.addAttribute("message", "Блог успешно опубликован!");
+        return "redirect:/blog-center"; // возвращаемся к форме с сообщением
     }
 }
