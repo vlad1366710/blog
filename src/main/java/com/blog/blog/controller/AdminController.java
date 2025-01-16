@@ -28,11 +28,11 @@ public class AdminController {
     public String adminPanel(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Проверяем, является ли пользователь администратором
+
         if (isUserAdmin(authentication)) {
             List<User> users = userService.getUsers(page);
             int totalUsers = userService.getTotalUsers();
-            int totalPages = (int) Math.ceil((double) totalUsers / UserService.USERS_PER_PAGE); // Получаем общее количество страниц
+            int totalPages = (int) Math.ceil((double) totalUsers / UserService.USERS_PER_PAGE);
 
             model.addAttribute("users", users);
             model.addAttribute("page", page);
@@ -41,7 +41,7 @@ public class AdminController {
             return "adminPanel";
         }
 
-        // Если пользователь не администратор, добавляем сообщение об ошибке
+
         model.addAttribute("error", "У вас нет прав доступа к этой панели.");
         return "error";
     }
@@ -55,7 +55,7 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при удалении пользователя. Попробуйте еще раз.");
         }
 
-        return "redirect:/admin"; // Перенаправляем обратно на панель администратора
+        return "redirect:/admin";
     }
 
     private boolean isUserAdmin(Authentication authentication) {
