@@ -61,9 +61,9 @@ public class UserService {
      */
     public void registerUser(User user) throws IllegalArgumentException {
         logger.info("Регистрация нового пользователя: {}", user.getUsername());
-        existsByLogin(user.getUserLogin());
-
+        validateLogin(user.getUserLogin());
         validatePassword(user.getPassword());
+        validateMail(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         user.setAvatarUrl("/image/i.webp");
@@ -94,12 +94,37 @@ public class UserService {
      * Проверяет пароль на соответствие требованиям.
      *
      * @param password Пароль для проверки.
-     * @throws IllegalArgumentException Если пароль не соответствует требованиям.
+     * @throws PasswordException Если пароль не соответствует требованиям.
      */
     private void validatePassword(String password) {
+        // Проверка длины пароля
         if (password.length() < 8) {
-            logger.warn("Попытка регистрации с некорректным паролем.");
-            throw new IllegalArgumentException("Пароль должен содержать минимум 8 символов.");
+            logger.warn("Попытка регистрации с некорректным паролем: длина пароля меньше 8 символов.");
+            throw new PasswordException("Пароль должен содержать минимум 8 символов.");
+        }
+
+        // Проверка на наличие хотя бы одной строчной буквы
+        if (!password.matches(".*[a-z].*")) {
+            logger.warn("Попытка регистрации с некорректным паролем: отсутствует строчная буква.");
+            throw new PasswordException("Пароль должен содержать хотя бы одну строчную букву.");
+        }
+
+        // Проверка на наличие хотя бы одной заглавной буквы
+        if (!password.matches(".*[A-Z].*")) {
+            logger.warn("Попытка регистрации с некорректным паролем: отсутствует заглавная буква.");
+            throw new PasswordException("Пароль должен содержать хотя бы одну заглавную букву.");
+        }
+
+        // Проверка на наличие хотя бы одного специального символа
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+            logger.warn("Попытка регистрации с некорректным паролем: отсутствует специальный символ.");
+            throw new PasswordException("Пароль должен содержать хотя бы один специальный символ.");
+        }
+
+        // Проверка на использование только английских символов
+        if (!password.matches("^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]*$")) {
+            logger.warn("Попытка регистрации с некорректным паролем: пароль содержит неанглийские символы.");
+            throw new PasswordException("Пароль должен содержать только английские символы.");
         }
     }
 
@@ -228,7 +253,7 @@ public class UserService {
     public void resetPassword(String email) {
         logger.info("Сброс пароля для пользователя с email: {}", email);
         User user = userRepository.findByEmail(email);
-        if (user == null) {
+        if (user.isAdmin()) {
             logger.warn("Попытка сброса пароля для несуществующего email: {}", email);
             throw new IllegalArgumentException("Пользователь с таким email не найден.");
         }
@@ -328,26 +353,32 @@ public class UserService {
         return tokenBuilder.toString();
     }
 
-    public boolean existsByLogin(String userLogin) {
-        Optional<User> user = userRepository.findByUserLogin(userLogin);
-        if (user.isPresent()) {
-            throw new UserNotFoundException("Пользователь c таким логином уже существеут");
+    public boolean validateLogin(String userLogin) {
+        if (userRepository.existsByUserLogin(userLogin)) {
+            throw new UserException("Пользователь c таким логином уже существует");
         }
         return true;
     }
 
-    public User findByUserLogin(String userLogin) throws UserNotFoundException {
+    public boolean validateMail(String userMail) {
+        if (userRepository.existsByEmail(userMail)) {
+            throw new UserException("Пользователь c такой почтой уже существует");
+        }
+        return true;
+    }
+
+    public User findByUserLogin(String userLogin) throws UserException {
         Optional<User> user = userRepository.findByUserLogin(userLogin);
         if (user.isEmpty()) {
-            throw new UserNotFoundException("Пользователь не найден");
+            throw new UserException("Пользователь не найден");
         }
         return user.orElse(null);
     }
 
     // Метод для проверки пароля
-    public void validatePassword(String rawPassword, String encodedPassword) throws InvalidPasswordException {
+    public void validatePassword(String rawPassword, String encodedPassword) throws PasswordException {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-            throw new InvalidPasswordException("Неверный пароль");
+            throw new PasswordException("Неверный пароль");
         }
     }
 }

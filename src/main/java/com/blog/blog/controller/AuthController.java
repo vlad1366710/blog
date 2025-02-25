@@ -1,6 +1,5 @@
 package com.blog.blog.controller;
 
-import com.blog.blog.SecurityConfig;
 import com.blog.blog.model.User;
 import com.blog.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,6 @@ public class AuthController {
     private final UserService userService;
 
     @Autowired
-    private SecurityConfig securityConfig; // Внедрение PasswordEncoder
-
-    @Autowired
     public AuthController(UserService userService) {
         this.userService = userService;
     }
@@ -29,11 +25,8 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
-        if (error != null) {
-            model.addAttribute("error", "Неверные учетные данные.");
-        }
-        return "login"; // Возвращает страницу логина
+    public String login() {
+        return "login";
     }
 
     @PostMapping("/login")
@@ -44,9 +37,8 @@ public class AuthController {
         try {
             userService.loginUser(userLogin, password);
         } catch (Exception e) {
-            // Логирование ошибки
             logger.error("Ошибка при входе в систему: ", e);
-            model.addAttribute("error", "Произошла ошибка при входе. Попробуйте еще раз.");
+            model.addAttribute("error", e.getMessage());
             return "login";
         }
         return "redirect:/posts"; // Перенаправление на страницу постов
@@ -61,10 +53,6 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute User user, Model model) {
         try {
-            // Проверка уникальности пользователя
-
-
-            // Регистрация пользователя
             userService.registerUser(user);
             return "redirect:/blog-center";
         } catch (IllegalArgumentException e) {
