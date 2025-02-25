@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,8 @@ public class UserService {
     private final AccountService accountService;
     private final EmailService emailService;
 
+    private static final String DIGITS = "0123456789"; // Набор символов для токена
+    private static final int TOKEN_LENGTH = 6; // Длина токена
     public static final int USERS_PER_PAGE = 10;
 
     /**
@@ -59,6 +62,11 @@ public class UserService {
         logger.info("Регистрация нового пользователя: {}", user.getUsername());
         validatePassword(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        user.setAvatarUrl("/image/i.webp");
+        user.setRole("Пользователь");
+        user.setActive(true);
+
         // Генерация токена подтверждения email
         String token = UUID.randomUUID().toString();
         user.setEmailConfirmationToken(token);
@@ -67,9 +75,16 @@ public class UserService {
         userRepository.save(user);
 
         // Отправка email с токеном
-        sendEmail(user.getEmail(), "Подтверждение email",
+        sendEmail(user.getEmail(), token,  "Подтверждение email",
                 "Для подтверждения email перейдите по ссылке: http://yourdomain.com/confirm-email?token=" + token);
         logger.info("Пользователь {} успешно зарегистрирован.", user.getUsername());
+    }
+
+    public void loginUser(String password, String userLogin) throws IllegalArgumentException {
+
+       User user = findByUserLogin(userLogin);
+       validatePassword(password, user.getPassword());
+
     }
 
     /**
@@ -83,17 +98,6 @@ public class UserService {
             logger.warn("Попытка регистрации с некорректным паролем.");
             throw new IllegalArgumentException("Пароль должен содержать минимум 8 символов.");
         }
-    }
-
-    /**
-     * Находит пользователя по логину.
-     *
-     * @param login Логин пользователя.
-     * @return Найденный пользователь или null, если пользователь не найден.
-     */
-    public User findByUserLogin(String login) {
-        logger.debug("Поиск пользователя по логину: {}", login);
-        return userRepository.findByUsername(login);
     }
 
     /**
@@ -230,7 +234,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(temporaryPassword));
         userRepository.save(user);
 
-        sendEmail(user.getEmail(), "Сброс пароля", "Ваш временный пароль: " + temporaryPassword);
+        //sendEmail(user.getEmail(), "Сброс пароля", "Ваш временный пароль: " + temporaryPassword);
         logger.info("Временный пароль отправлен на email: {}", email);
     }
 
@@ -239,9 +243,9 @@ public class UserService {
         return UUID.randomUUID().toString().substring(0, 8);
     }
 
-    private void sendEmail(String email, String subject, String message) {
+    private void sendEmail(String email, String token, String subject, String message) {
         logger.debug("Отправка email на адрес: {}", email);
-        emailService.sendEmail();
+        emailService.sendEmail(email,token);
         // Логика отправки email
     }
 
@@ -311,4 +315,32 @@ public class UserService {
         logger.info("Email пользователя {} успешно подтвержден.", user.getUsername());
     }
 
+    private String generateConfirmationToken() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder tokenBuilder = new StringBuilder(TOKEN_LENGTH);
+        for (int i = 0; i < TOKEN_LENGTH; i++) {
+            int index = random.nextInt(DIGITS.length());
+            tokenBuilder.append(DIGITS.charAt(index));
+        }
+        return tokenBuilder.toString();
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public User findByUserLogin(String userLogin) throws UserNotFoundException {
+        User user = userRepository.findByUsername(userLogin);
+        if (user == null) {
+            throw new UserNotFoundException("Пользователь не найден");
+        }
+        return user;
+    }
+
+    // Метод для проверки пароля
+    public void validatePassword(String rawPassword, String encodedPassword) throws InvalidPasswordException {
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new InvalidPasswordException("Неверный пароль");
+        }
+    }
 }

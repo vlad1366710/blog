@@ -38,7 +38,7 @@ public class ContactController {
                               @RequestParam("message") String message,
                               RedirectAttributes redirectAttributes) {
         try {
-            emailService.sendEmail();
+
             redirectAttributes.addFlashAttribute("successMessage", "Сообщение успешно отправлено.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при отправке сообщения. Попробуйте еще раз.");

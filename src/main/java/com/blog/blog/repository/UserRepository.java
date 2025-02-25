@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return Пользователь с указанным токеном или null, если пользователь не найден.
      */
     User findByEmailConfirmationToken(String token);
+
+    boolean existsByUsername(String username);
 }
 
 

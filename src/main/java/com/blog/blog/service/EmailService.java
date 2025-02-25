@@ -1,5 +1,6 @@
 package com.blog.blog.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,18 +15,31 @@ public class EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-    public void sendEmail() {
-        String host = "smtp.gmail.com"; // SMTP сервер
-        final String user = "vladmuz369@gmail.com"; // Ваш email
-        final String password = "password"; // Ваш пароль или пароль приложения
+    @Value("${mail.smtp.host}")
+    private String host;
 
+    @Value("${mail.smtp.port}")
+    private String port;
+
+    @Value("${mail.smtp.auth}")
+    private String auth;
+
+    @Value("${mail.smtp.starttls.enable}")
+    private String starttls;
+
+    @Value("${mail.username}")
+    private String user;
+
+    @Value("${mail.password}")
+    private String password;
+
+    public void sendEmail(String to, String token) {
         Properties props = new Properties();
         props.put("mail.smtp.host", host);
-        props.put("mail.smtp.auth", "true"); // Исправлено
-        props.put("mail.smtp.port", "587"); // Порт для TLS
-        props.put("mail.smtp.starttls.enable", "true"); // Включить TLS
+        props.put("mail.smtp.auth", auth);
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.starttls.enable", starttls);
 
-        String to = "vlad.psu@mail.ru"; // Получатель
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -37,14 +51,14 @@ public class EmailService {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject("Test Subject");
-            message.setText("This is a test email!");
+            message.setSubject("Код подтверждения");
+            message.setText(token);
 
             Transport.send(message);
-            System.out.println("Email sent successfully!");
+            logger.info("Email sent successfully!");
 
         } catch (MessagingException e) {
-            e.printStackTrace();
+            logger.error("Failed to send email", e);
         }
     }
 }
