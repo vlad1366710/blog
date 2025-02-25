@@ -3,9 +3,7 @@ package com.blog.blog.controller;
 import com.blog.blog.SecurityConfig;
 import com.blog.blog.model.User;
 import com.blog.blog.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,12 +62,6 @@ public class AuthController {
     public String registerUser(@ModelAttribute User user, Model model) {
         try {
             // Проверка уникальности пользователя
-            if (userService.existsByUsername(user.getUsername())) {
-                model.addAttribute("error", "Пользователь с таким именем уже существует.");
-                return "register";
-            }
-
-
 
 
             // Регистрация пользователя
@@ -79,7 +71,7 @@ public class AuthController {
             model.addAttribute("error", e.getMessage());
             return "register"; // Возвращаемся на страницу регистрации с ошибкой
         } catch (Exception e) {
-            model.addAttribute("error", "Ошибка регистрации. Попробуйте еще раз.");
+            model.addAttribute("error", e.getMessage());
             return "register"; // Возвращаемся на страницу регистрации с ошибкой
         }
     }

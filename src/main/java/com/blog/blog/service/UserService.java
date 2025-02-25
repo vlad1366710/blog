@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -60,6 +61,8 @@ public class UserService {
      */
     public void registerUser(User user) throws IllegalArgumentException {
         logger.info("Регистрация нового пользователя: {}", user.getUsername());
+        existsByLogin(user.getUserLogin());
+
         validatePassword(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -325,16 +328,20 @@ public class UserService {
         return tokenBuilder.toString();
     }
 
-    public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    public boolean existsByLogin(String userLogin) {
+        Optional<User> user = userRepository.findByUserLogin(userLogin);
+        if (user.isPresent()) {
+            throw new UserNotFoundException("Пользователь c таким логином уже существеут");
+        }
+        return true;
     }
 
     public User findByUserLogin(String userLogin) throws UserNotFoundException {
-        User user = userRepository.findByUsername(userLogin);
-        if (user == null) {
+        Optional<User> user = userRepository.findByUserLogin(userLogin);
+        if (user.isEmpty()) {
             throw new UserNotFoundException("Пользователь не найден");
         }
-        return user;
+        return user.orElse(null);
     }
 
     // Метод для проверки пароля
