@@ -24,12 +24,13 @@ public class User {
     private String avatarUrl;
     private String email;
     private String role;
-
+    private String emailConfirmationToken;
+    private boolean emailConfirmed;
     private LocalDateTime lastLogin;
+    private boolean blocked;
 
     @OneToMany(mappedBy = "user")
     private Set<Comment> comments;
-
 
     public Long getId() {
         return id;
@@ -39,11 +40,11 @@ public class User {
         this.id = id;
     }
 
-    public String getUserLogin() { // Измените на getUser Login
+    public String getUserLogin() {
         return userLogin;
     }
 
-    public void setUserLogin(String userLogin) { // Измените на setUser Login
+    public void setUserLogin(String userLogin) {
         this.userLogin = userLogin;
     }
 
@@ -87,27 +88,27 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public String getEmail() { // Геттер для email
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) { // Сеттер для email
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getRole() { // Геттер для role
+    public String getRole() {
         return role;
     }
 
-    public void setRole(String role) { // Сеттер для role
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public LocalDateTime getLastLogin() { // Геттер для lastLogin
+    public LocalDateTime getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(LocalDateTime lastLogin) { // Сеттер для lastLogin
+    public void setLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
     }
 
@@ -117,5 +118,29 @@ public class User {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getEmailConfirmationToken() {
+        return emailConfirmationToken;
+    }
+
+    public void setEmailConfirmationToken(String emailConfirmationToken) {
+        this.emailConfirmationToken = emailConfirmationToken;
+    }
+
+    public boolean isEmailConfirmed() {
+        return emailConfirmed;
+    }
+
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }
