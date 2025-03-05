@@ -3,6 +3,8 @@ package com.blog.blog.controller;
 import com.blog.blog.model.User;
 import com.blog.blog.service.AccountService;
 import com.blog.blog.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,9 @@ import java.io.IOException;
 @Controller
 public class AccountController {
 
+    // Логгер для класса AccountController
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+
     private final UserService userService;
     private final AccountService accountService;
 
@@ -28,37 +33,39 @@ public class AccountController {
     }
 
     @GetMapping("/account-settings")
-    public String accountSettings(@RequestParam(value = "error", required = false) String error, Model model) {
-        model.addAttribute("currentUser", userService.getUserInfo(accountService.getUserName()));
+    public String accountSettings(Model model) {
+        logger.info("Обработка GET-запроса на страницу настроек аккаунта");
+
+        String currentUserName = accountService.getUserName();
+        logger.debug("Текущий пользователь: {}", currentUserName);
+
+        model.addAttribute("currentUser", userService.getUserInfo(currentUserName));
+
+
+        logger.info("Страница настроек аккаунта успешно загружена");
         return "account-settings";
     }
 
     @PostMapping("/upload-avatar")
-    public String uploadAvatar(@RequestParam("avatar") MultipartFile file, RedirectAttributes redirectAttributes) {
-        String uploadDir = "C:\\Users\\user\\Desktop\\blog\\src\\main\\resources\\static\\image\\";
-
-
-        if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Выберите файл для загрузки.");
-            return "redirect:/account-settings";
-        }
+    public String uploadAvatar(
+            @RequestParam("avatar") MultipartFile file,
+            RedirectAttributes redirectAttributes,
+            Model model) { // Добавляем параметр Model
+        logger.info("Обработка запроса на загрузку аватара");
 
         try {
-            String avatarPath = uploadDir + file.getOriginalFilename();
-            File uploadFile = new File(avatarPath);
-            file.transferTo(uploadFile);
-
-            User currentUser  = userService.getUserInfo(accountService.getUserName());
-            currentUser .setAvatarUrl("/image/" + file.getOriginalFilename());
-            userService.updateUser (currentUser );
-
+            accountService.uploadAvatar(file);
             redirectAttributes.addFlashAttribute("message", "Аватар успешно загружен.");
+            return "redirect:/account-settings";
+        } catch (IllegalArgumentException e) {
+            logger.warn("Ошибка при загрузке аватара: {}", e.getMessage());
+            model.addAttribute("error", e.getMessage()); // Добавляем ошибку в модель
+            return "account-settings"; // Возвращаем страницу с ошибкой
         } catch (IOException e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "Ошибка загрузки файла. Попробуйте еще раз.");
+            logger.error("Ошибка при загрузке файла", e);
+            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка загрузки файла. Попробуйте еще раз.");
+            return "redirect:/account-settings";
         }
-
-        return "redirect:/account-settings";
     }
 
     @PostMapping("/update-account")
@@ -66,14 +73,19 @@ public class AccountController {
             @RequestParam("username") String username,
             @RequestParam(value = "password", required = false) String password,
             RedirectAttributes redirectAttributes) {
+        logger.info("Обработка запроса на обновление учетной записи");
+
         try {
-            userService.updateUser (username, password);
+            userService.updateUser(username, password);
+            logger.info("Учетная запись пользователя {} успешно обновлена", username);
             redirectAttributes.addFlashAttribute("successMessage", "Настройки успешно обновлены.");
             return "redirect:/login";
         } catch (IllegalArgumentException e) {
+            logger.warn("Ошибка при обновлении учетной записи: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/account-settings";
         } catch (Exception e) {
+            logger.error("Ошибка при обновлении учетной записи", e);
             redirectAttributes.addFlashAttribute("errorMessage", "Ошибка при обновлении настроек. Попробуйте еще раз.");
             return "redirect:/account-settings";
         }
